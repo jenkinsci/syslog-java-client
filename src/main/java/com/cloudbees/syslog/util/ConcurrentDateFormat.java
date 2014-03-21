@@ -41,7 +41,7 @@ public class ConcurrentDateFormat {
      *
      * @param pattern      the pattern describing the date and time pattern
      * @param locale       the locale whose date pattern symbols should be used
-     * @param timeZone the timezone used by the underlying calendar
+     * @param timeZone     the timezone used by the underlying calendar
      * @param maxCacheSize
      * @throws NullPointerException     if the given pattern or locale is null
      * @throws IllegalArgumentException if the given pattern is invalid
@@ -71,5 +71,10 @@ public class ConcurrentDateFormat {
         } finally {
             dateFormats.offer(dateFormat);
         }
+    }
+
+    @Override
+    public String toString() {
+        return "ConcurrentDateFormat[pattern=" + pattern + "]";
     }
 }

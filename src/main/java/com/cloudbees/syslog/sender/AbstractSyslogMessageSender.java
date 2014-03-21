@@ -123,8 +123,8 @@ public abstract class AbstractSyslogMessageSender implements SyslogMessageSender
         this.defaultAppName = defaultAppName;
     }
 
-    public void setDefaultMessageHostName(String defaultHostName) {
-        this.defaultMessageHostname = defaultHostName;
+    public void setDefaultMessageHostname(String defaultHostname) {
+        this.defaultMessageHostname = defaultHostname;
     }
 
     public void setDefaultFacility(Facility defaultFacility) {

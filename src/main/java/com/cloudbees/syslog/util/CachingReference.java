@@ -28,7 +28,7 @@ import java.util.concurrent.locks.ReentrantReadWriteLock;
  * <p/>
  * {@code Object} is created implementing the {@link #newObject()} method.
  * <p/>
- *
+ * <p/>
  * Sample to get an {@code InetAddress} refreshed against a DNS every 10 seconds:
  * <code><pre>
  * CachingReference myRemoteServerAddress = new CachingReference<InetAddress>(10, TimeUnit.SECONDS) {
@@ -92,5 +92,10 @@ public abstract class CachingReference<E> {
         } finally {
             rwl.readLock().unlock();
         }
+    }
+
+    @Override
+    public String toString() {
+        return "CachingReference[" + this.object + "]";
     }
 }

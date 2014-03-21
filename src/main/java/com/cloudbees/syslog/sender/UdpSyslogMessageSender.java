@@ -19,9 +19,7 @@ import com.cloudbees.syslog.SyslogMessage;
 import com.cloudbees.syslog.util.CachingReference;
 
 import javax.annotation.Nullable;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.OutputStreamWriter;
+import java.io.*;
 import java.net.*;
 import java.util.logging.Level;
 
@@ -33,7 +31,7 @@ import java.util.logging.Level;
  *
  * @author <a href="mailto:cleclerc@cloudbees.com">Cyrille Le Clerc</a>
  */
-public class SyslogMessageUdpSender extends AbstractSyslogMessageSender {
+public class UdpSyslogMessageSender extends AbstractSyslogMessageSender {
     /**
      * {@link java.net.InetAddress InetAddress} of the remote Syslog Server.
      * <p/>
@@ -51,7 +49,7 @@ public class SyslogMessageUdpSender extends AbstractSyslogMessageSender {
 
     private DatagramSocket datagramSocket;
 
-    public SyslogMessageUdpSender() {
+    public UdpSyslogMessageSender() {
         try {
             setSyslogServerHostname(DEFAULT_SYSLOG_HOST);
             datagramSocket = new DatagramSocket();
@@ -73,15 +71,14 @@ public class SyslogMessageUdpSender extends AbstractSyslogMessageSender {
 
         try {
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
-            OutputStreamWriter out = new OutputStreamWriter(baos, UTF_8);
-
+            Writer out = new OutputStreamWriter(baos, UTF_8);
             message.toSyslogMessage(messageFormat, out);
+            out.flush();
 
             if (logger.isLoggable(Level.FINEST)) {
                 logger.finest("Send syslog message " + new String(baos.toByteArray(), UTF_8));
             }
             byte[] bytes = baos.toByteArray();
-            baos.close();
 
             DatagramPacket packet = new DatagramPacket(bytes, bytes.length, syslogServerHostnameReference.get(), syslogServerPort);
             datagramSocket.send(packet);
@@ -97,7 +94,7 @@ public class SyslogMessageUdpSender extends AbstractSyslogMessageSender {
     }
 
 
-    public void setSyslogServerHostname(final String syslogServerHostname) throws UnknownHostException {
+    public void setSyslogServerHostname(final String syslogServerHostname) {
         this.syslogServerHostnameReference = new CachingReference<InetAddress>(DEFAULT_INET_ADDRESS_TTL_IN_NANOS) {
             @Nullable
             @Override

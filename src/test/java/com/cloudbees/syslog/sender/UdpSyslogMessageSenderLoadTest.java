@@ -27,7 +27,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 /**
  * @author <a href="mailto:cleclerc@cloudbees.com">Cyrille Le Clerc</a>
  */
-public class SyslogMessageUdpSenderLoadTest {
+public class UdpSyslogMessageSenderLoadTest {
 
     public static void main(String[] args) throws Exception {
         final int THREADS_COUNT = 10;
@@ -35,8 +35,8 @@ public class SyslogMessageUdpSenderLoadTest {
 
         ExecutorService executorService = Executors.newFixedThreadPool(THREADS_COUNT);
 
-        final SyslogMessageUdpSender messageSender = new SyslogMessageUdpSender();
-        messageSender.setDefaultMessageHostName("mysecretkey");
+        final UdpSyslogMessageSender messageSender = new UdpSyslogMessageSender();
+        messageSender.setDefaultMessageHostname("mysecretkey");
         messageSender.setDefaultAppName("myapp");
         messageSender.setDefaultFacility(Facility.USER);
         messageSender.setDefaultSeverity(Severity.INFORMATIONAL);

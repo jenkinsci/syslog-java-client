@@ -24,13 +24,13 @@ import java.sql.Timestamp;
 /**
  * @author <a href="mailto:cleclerc@cloudbees.com">Cyrille Le Clerc</a>
  */
-public class SyslogMessageUdpSenderTest {
+public class UpdSyslogMessageSenderTest {
 
     // @Ignore
     @Test
     public void send() throws Exception {
-        SyslogMessageUdpSender messageSender = new SyslogMessageUdpSender();
-        messageSender.setDefaultMessageHostName("mysecretkey");
+        UdpSyslogMessageSender messageSender = new UdpSyslogMessageSender();
+        messageSender.setDefaultMessageHostname("mysecretkey");
         messageSender.setDefaultAppName("myapp");
         messageSender.setDefaultFacility(Facility.USER);
         messageSender.setDefaultSeverity(Severity.INFORMATIONAL);
