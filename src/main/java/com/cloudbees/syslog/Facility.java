@@ -168,13 +168,13 @@ public enum Facility implements Comparable<Facility> {
     }
 
     /**
-     * @param label Syslog facility textual code
+     * @param label Syslog facility textual code. {@code null} or empty returns {@code null}
      * @return Syslog facility, {@code null} if given value is {@code null}
      * @throws IllegalArgumentException the given value is not a valid Syslog facility textual code
      */
     @Nullable
     public static Facility fromLabel(String label) throws IllegalArgumentException {
-        if (label == null)
+        if (label == null || label.isEmpty())
             return null;
 
         Facility facility = facilityFromLabel.get(label);

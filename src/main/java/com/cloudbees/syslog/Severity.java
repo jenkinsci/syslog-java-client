@@ -94,13 +94,13 @@ public enum Severity {
     }
 
     /**
-     * @param label Syslog severity textual code
+     * @param label Syslog severity textual code. {@code null} or empty returns {@code null}
      * @return Syslog severity, {@code null} if given value is {@code null}
      * @throws IllegalArgumentException the given value is not a valid Syslog severity textual code
      */
     @Nullable
     public static Severity fromLabel(@Nullable String label) throws IllegalArgumentException {
-        if (label == null)
+        if (label == null || label.isEmpty())
             return null;
 
         Severity severity = severityFromLabel.get(label);

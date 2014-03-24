@@ -68,11 +68,13 @@ public class LevelHelper {
     /**
      * Simplification: use delegate to {@link Level#parse(String)} even if the behavior is slightly different for localized log levels.
      *
-     * @param name
+     * @param name {@code null} or empty returns {@code null}
      * @return
      */
     @Nullable
-    public static Level findLevel(@Nonnull String name) {
+    public static Level findLevel(@Nullable String name) {
+        if(name == null || name.isEmpty())
+            return null;
         return Level.parse(name);
 
     }
