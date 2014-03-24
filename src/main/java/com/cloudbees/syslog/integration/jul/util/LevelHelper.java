@@ -36,7 +36,7 @@ import java.util.logging.Level;
 public class LevelHelper {
 
     public final static List<Level> levels = Collections.unmodifiableList(Arrays.asList(Level.OFF, Level.SEVERE, Level.WARNING, Level.INFO, Level.CONFIG,
-            Level.FINE, Level.FINEST, Level.ALL));
+            Level.FINE, Level.FINER, Level.FINEST, Level.ALL));
 
     public final static Map<String, Level> levelsByName;
     public final static Map<Integer, Level> levelsByValue;
@@ -80,5 +80,17 @@ public class LevelHelper {
     @Nullable
     public static Severity toSeverity(@Nullable Level level) {
         return julLevelToSyslogSeverity.get(level);
+    }
+
+    /**
+     * Compare on {@link java.util.logging.Level#intValue()}
+     */
+    public static Comparator<Level> comparator() {
+        return new Comparator<Level>() {
+            @Override
+            public int compare(Level l1, Level l2) {
+                return Integer.compare(l1.intValue(), l2.intValue());
+            }
+        };
     }
 }

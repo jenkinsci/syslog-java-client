@@ -17,6 +17,7 @@ package com.cloudbees.syslog;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -122,6 +123,18 @@ public enum Severity {
     @Nonnull
     public String label() {
         return label;
+    }
+
+    /**
+     * Compare on {@link Severity#numericalCode()}
+     */
+    public static Comparator<Severity> comparator() {
+        return new Comparator<Severity>() {
+            @Override
+            public int compare(Severity s1, Severity s2) {
+                return Integer.compare(s1.numericalCode, s2.numericalCode);
+            }
+        };
     }
 }
 

@@ -17,6 +17,7 @@ package com.cloudbees.syslog;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -27,7 +28,7 @@ import java.util.Map;
  *
  * @author <a href="mailto:cleclerc@cloudbees.com">Cyrille Le Clerc</a>
  */
-public enum Facility {
+public enum Facility implements Comparable<Facility> {
 
     /**
      * kernel messages, numerical code 0.
@@ -153,7 +154,7 @@ public enum Facility {
     }
 
     /**
-     * @param label Syslog facility numerical code
+     * @param numericalCode Syslog facility numerical code
      * @return Syslog facility, not {@code null}
      * @throws IllegalArgumentException the given numericalCode is not a valid Syslog facility numerical code
      */
@@ -195,5 +196,17 @@ public enum Facility {
      */
     public String label() {
         return label;
+    }
+
+    /**
+     * Compare on {@link Facility#numericalCode()}
+     */
+    public static Comparator<Facility> comparator() {
+        return new Comparator<Facility>() {
+            @Override
+            public int compare(Facility f1, Facility f2) {
+                return Integer.compare(f1.numericalCode, f2.numericalCode);
+            }
+        };
     }
 }
