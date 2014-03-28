@@ -1,0 +1,43 @@
+<div>
+    HOSTNAME field of the Syslog message as defined in <a href="http://tools.ietf.org/html/rfc5424">RFC 5424 - The
+    Syslog Protocol</a>.
+
+    <blockquote cite="http://tools.ietf.org/html/rfc5424#section-6.2.4">
+        The HOSTNAME field identifies the machine that originally sent the
+        syslog message.<br/>
+        <br/>
+        The HOSTNAME field SHOULD contain the hostname and the domain name of
+        the originator in the format specified in STD 13 [RFC1034]. This
+        format is called a Fully Qualified Domain Name (FQDN) in this
+        document.<br/>
+        <br/>
+        In practice, not all syslog applications are able to provide an FQDN.
+        As such, other values MAY also be present in HOSTNAME. This document
+        makes provisions for using other values in such situations. A syslog
+        application SHOULD provide the most specific available value first.
+        The order of preference for the contents of the HOSTNAME field is as
+        follows:<br/>
+        <br/>
+        1. FQDN<br/>
+        <br/>
+        2. Static IP address<br/>
+        <br/>
+        3. hostname<br/>
+        <br/>
+        4. Dynamic IP address<br/>
+        <br/>
+        5. the NILVALUE<br/>
+        <br/>
+        If an IPv4 address is used, it MUST be in the format of the dotted
+        decimal notation as used in STD 13 [RFC1035]. If an IPv6 address is
+        used, a valid textual representation as described in [RFC4291],
+        Section 2.2, MUST be used.<br/>
+        <br/>
+        Syslog applications SHOULD consistently use the same value in the
+        HOSTNAME field for as long as possible.<br/>
+        <br/>
+        The NILVALUE SHOULD only be used when the syslog application has no
+        way to obtain its real hostname. This situation is considered highly
+        unlikely.
+    </blockquote>
+</div>

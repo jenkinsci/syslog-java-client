@@ -1,0 +1,32 @@
+<j:jelly xmlns:j="jelly:core" xmlns:st="jelly:stapler" xmlns:d="jelly:define" xmlns:l="/lib/layout"
+         xmlns:t="/lib/hudson" xmlns:f="/lib/form">
+    <f:section title="${%Syslog Logger}">
+        <f:entry title="${%Syslog Server Hostname}" field="syslogServerHostname">
+            <f:textbox/>
+        </f:entry>
+        <f:entry title="${%Syslog Server Port}" field="syslogServerPort">
+            <f:number/>
+        </f:entry>
+
+        <f:entry field="levelFilter" title="${%Syslog Logging Handler Filter Level}">
+            <f:select/>
+        </f:entry>
+        <f:advanced>
+            <f:entry field="networkProtocol" title="${%Syslog network protocol}">
+                <f:select/>
+            </f:entry>
+            <f:entry field="messageFormat" title="${%Syslog message format}">
+                <f:select/>
+            </f:entry>
+            <f:entry title="${%Syslog App Name}" field="appName">
+                <f:textbox/>
+            </f:entry>
+            <f:entry title="${%Message Hostname}" field="messageHostname">
+                <f:textbox/>
+            </f:entry>
+            <f:entry field="facility" title="${%Syslog Facility}">
+                <f:select/>
+            </f:entry>
+        </f:advanced>
+    </f:section>
+</j:jelly>

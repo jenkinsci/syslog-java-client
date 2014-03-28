@@ -1,0 +1,13 @@
+
+# INTELLIJ
+.idea
+*.iml
+
+# MAVEN
+target
+
+JENKINS PLUGIN
+work
+
+
+
