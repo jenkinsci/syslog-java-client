@@ -1,4 +1,4 @@
-# Metrics Plugin
+# Syslog Logger Plugin
 
 This plugin sends Jenkins server logs to a Syslog server.
 
@@ -22,4 +22,4 @@ To test in a local Jenkins instance
 
     mvn hpi:run
 
-  [wiki]: http://wiki.jenkins-ci.org/display/JENKINS/Metrics+Plugin
+  [wiki]: http://wiki.jenkins-ci.org/display/JENKINS/Syslog+Logger+Plugin
