@@ -16,7 +16,7 @@
 package com.cloudbees.syslog.sender;
 
 import com.cloudbees.syslog.SyslogMessage;
-import com.cloudbees.syslog.SyslogMessageFormat;
+import com.cloudbees.syslog.MessageFormat;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -31,7 +31,7 @@ public interface SyslogMessageSender {
     public static final long DEFAULT_INET_ADDRESS_TTL_IN_MILLIS = TimeUnit.MILLISECONDS.convert(30, TimeUnit.SECONDS);
     public static final long DEFAULT_INET_ADDRESS_TTL_IN_NANOS = TimeUnit.NANOSECONDS.convert(DEFAULT_INET_ADDRESS_TTL_IN_MILLIS, TimeUnit.MILLISECONDS);
     public static final String DEFAULT_SYSLOG_HOST = "localhost";
-    public static final SyslogMessageFormat DEFAULT_SYSLOG_MESSAGE_FORMAT = SyslogMessageFormat.RFC_3164;
+    public static final MessageFormat DEFAULT_SYSLOG_MESSAGE_FORMAT = MessageFormat.RFC_3164;
     public static final int DEFAULT_SYSLOG_PORT = 514;
 
     /**

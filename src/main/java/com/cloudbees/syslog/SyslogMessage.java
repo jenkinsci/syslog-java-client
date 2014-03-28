@@ -33,6 +33,8 @@ import java.util.concurrent.TimeUnit;
 
 /**
  * Syslog message as defined in <a href="https://tools.ietf.org/html/rfc5424">RFC 5424 - The Syslog Protocol</a>.
+ * <p/>
+ * Also compatible with <a href="http://tools.ietf.org/html/rfc3164">RFC-3164: The BSD syslog Protocol</a>,
  *
  * @author <a href="mailto:cleclerc@cloudbees.com">Cyrille Le Clerc</a>
  */
@@ -208,16 +210,16 @@ public class SyslogMessage {
      * Generates a Syslog message complying to the <a href="http://tools.ietf.org/html/rfc5424">RFC-5424</a> format
      * or to the <a href="http://tools.ietf.org/html/rfc3164">RFC-3164</a> format.
      *
-     * @param syslogMessageFormat message format, not {@code null}
+     * @param messageFormat message format, not {@code null}
      */
-    public String toSyslogMessage(SyslogMessageFormat syslogMessageFormat) {
-        switch (syslogMessageFormat) {
+    public String toSyslogMessage(MessageFormat messageFormat) {
+        switch (messageFormat) {
             case RFC_3164:
                 return toRfc3164SyslogMessage();
             case RFC_5424:
                 return toRfc5424SyslogMessage();
             default:
-                throw new IllegalStateException("Unsupported message format '" + syslogMessageFormat + "'");
+                throw new IllegalStateException("Unsupported message format '" + messageFormat + "'");
         }
     }
 
@@ -225,11 +227,11 @@ public class SyslogMessage {
      * Generates a Syslog message complying to the <a href="http://tools.ietf.org/html/rfc5424">RFC-5424</a> format
      * or to the <a href="http://tools.ietf.org/html/rfc3164">RFC-3164</a> format.
      *
-     * @param syslogMessageFormat message format
+     * @param messageFormat message format
      * @param out                 output {@linkplain Writer}
      */
-    public void toSyslogMessage(@Nonnull SyslogMessageFormat syslogMessageFormat, @Nonnull Writer out) throws IOException {
-        switch (syslogMessageFormat) {
+    public void toSyslogMessage(@Nonnull MessageFormat messageFormat, @Nonnull Writer out) throws IOException {
+        switch (messageFormat) {
             case RFC_3164:
                 toRfc3164SyslogMessage(out);
                 break;
@@ -237,7 +239,7 @@ public class SyslogMessage {
                 toRfc5424SyslogMessage(out);
                 break;
             default:
-                throw new IllegalStateException("Unsupported message format '" + syslogMessageFormat + "'");
+                throw new IllegalStateException("Unsupported message format '" + messageFormat + "'");
         }
     }
 

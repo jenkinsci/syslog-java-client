@@ -3,13 +3,11 @@ package com.cloudbees.syslog.sender;
 import com.cloudbees.syslog.Facility;
 import com.cloudbees.syslog.Severity;
 import com.cloudbees.syslog.SyslogMessage;
-import com.cloudbees.syslog.SyslogMessageFormat;
-import com.cloudbees.syslog.util.CachingReference;
+import com.cloudbees.syslog.MessageFormat;
 
 import javax.annotation.Nonnull;
 import java.io.CharArrayWriter;
 import java.io.IOException;
-import java.net.InetAddress;
 import java.nio.charset.Charset;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -30,10 +28,10 @@ public abstract class AbstractSyslogMessageSender implements SyslogMessageSender
     // remote syslog server config
     /**
      * Format of messages accepted by the remote syslog server
-     * ({@link com.cloudbees.syslog.SyslogMessageFormat#RFC_3164 RFC_3164} or
-     * {@link com.cloudbees.syslog.SyslogMessageFormat#RFC_5424 RFC_5424})
+     * ({@link com.cloudbees.syslog.MessageFormat#RFC_3164 RFC_3164} or
+     * {@link com.cloudbees.syslog.MessageFormat#RFC_5424 RFC_5424})
      */
-    protected SyslogMessageFormat messageFormat = DEFAULT_SYSLOG_MESSAGE_FORMAT;
+    protected MessageFormat messageFormat = DEFAULT_SYSLOG_MESSAGE_FORMAT;
     // statistics
     protected final AtomicInteger sendCounter = new AtomicInteger();
     protected final AtomicLong sendDurationInNanosCounter = new AtomicLong();
@@ -81,7 +79,7 @@ public abstract class AbstractSyslogMessageSender implements SyslogMessageSender
         return defaultFacility;
     }
 
-    public SyslogMessageFormat getMessageFormat() {
+    public MessageFormat getMessageFormat() {
         return messageFormat;
     }
 
@@ -131,8 +129,8 @@ public abstract class AbstractSyslogMessageSender implements SyslogMessageSender
         this.defaultFacility = defaultFacility;
     }
 
-    public void setMessageFormat(SyslogMessageFormat syslogMessageFormat) {
-        this.messageFormat = syslogMessageFormat;
+    public void setMessageFormat(MessageFormat messageFormat) {
+        this.messageFormat = messageFormat;
     }
 
     public void setDefaultSeverity(Severity defaultSeverity) {
