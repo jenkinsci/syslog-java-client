@@ -24,7 +24,7 @@
 
     <artifactId>syslog-java-client</artifactId>
     <packaging>jar</packaging>
-    <version>1.0.0-SNAPSHOT</version>
+    <version>1.0.0</version>
 
     <name>syslog-java-client</name>
     <description>Syslog Java Client</description>
@@ -53,7 +53,8 @@
         <connection>scm:git:git://github.com/CloudBees-community/syslog-java-client.git</connection>
         <developerConnection>scm:git:git@github.com:CloudBees-community/syslog-java-client.git</developerConnection>
         <url>https://github.com/CloudBees-community/syslog-java-client</url>
-    </scm>
+      <tag>syslog-java-client-1.0.0</tag>
+  </scm>
     <dependencies>
         <dependency>
             <groupId>com.google.code.findbugs</groupId>
