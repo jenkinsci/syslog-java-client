@@ -93,4 +93,11 @@
             <distribution>repo</distribution>
         </license>
     </licenses>
+    <developers>
+        <developer>
+            <id>cleclerc</id>
+            <name>Cyrille Le Clerc</name>
+            <email>cleclerc@cloudbees.com</email>
+        </developer>
+    </developers>
 </project>
