@@ -44,6 +44,12 @@ import java.util.logging.Logger;
 
 /**
  * Send Jenkins CI logs to a Syslog Server.
+ * <p/>
+ * Features:
+ * <ul>
+ * <li>Network protocol: UDP (TCP and TLS should come soon)</li>
+ * <li>Syslog message format: RFC 3164 and RFC 5424</li>
+ * </ul>
  *
  * @author Cyrille Le Clerc
  */
@@ -197,7 +203,7 @@ public class SyslogLoggerPlugin extends GlobalConfiguration {
         return messageFormat == null ? null : messageFormat.name();
     }
 
-    public String getNetworkProtocol(){
+    public String getNetworkProtocol() {
         return "UDP";
     }
 
