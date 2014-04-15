@@ -19,8 +19,14 @@ import com.cloudbees.syslog.SyslogMessage;
 import com.cloudbees.syslog.util.CachingReference;
 
 import javax.annotation.Nullable;
-import java.io.*;
-import java.net.*;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.OutputStreamWriter;
+import java.io.Writer;
+import java.net.DatagramPacket;
+import java.net.DatagramSocket;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.util.logging.Level;
 
 /**
