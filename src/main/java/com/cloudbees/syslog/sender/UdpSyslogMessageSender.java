@@ -19,6 +19,7 @@ import com.cloudbees.syslog.SyslogMessage;
 import com.cloudbees.syslog.util.CachingReference;
 
 import javax.annotation.Nullable;
+import javax.annotation.concurrent.ThreadSafe;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
@@ -37,6 +38,7 @@ import java.util.logging.Level;
  *
  * @author <a href="mailto:cleclerc@cloudbees.com">Cyrille Le Clerc</a>
  */
+@ThreadSafe
 public class UdpSyslogMessageSender extends AbstractSyslogMessageSender {
     /**
      * {@link java.net.InetAddress InetAddress} of the remote Syslog Server.

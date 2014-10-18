@@ -20,13 +20,19 @@ import com.cloudbees.syslog.MessageFormat;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import javax.annotation.concurrent.ThreadSafe;
 import java.io.CharArrayWriter;
 import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 
 /**
+ * Send messages to a Syslog server.
+ * <p/>
+ * Implementation <strong>MUST</strong> be thread safe.
+ *
  * @author <a href="mailto:cleclerc@cloudbees.com">Cyrille Le Clerc</a>
  */
+@ThreadSafe
 public interface SyslogMessageSender {
     public static final long DEFAULT_INET_ADDRESS_TTL_IN_MILLIS = TimeUnit.MILLISECONDS.convert(30, TimeUnit.SECONDS);
     public static final long DEFAULT_INET_ADDRESS_TTL_IN_NANOS = TimeUnit.NANOSECONDS.convert(DEFAULT_INET_ADDRESS_TTL_IN_MILLIS, TimeUnit.MILLISECONDS);
