@@ -1,5 +1,15 @@
 # Syslog Java Client
 
+## Description
+
+Client library written in Java to send messages to a Syslog server.
+
+ * `SyslogMessageSender`: send messages to a Syslog Server. Support implementations
+   * `UdpSyslogMessageSender`: [RFC 3614 - The BSD syslog Protocol](http://tools.ietf.org/html/rfc3164) and [RFC 5426 - Transmission of Syslog Messages over UDP](http://tools.ietf.org/html/rfc5426)
+   * `TcpSyslogMessageSender`: [RFC 6587 - Transmission of Syslog Messages over TCP](http://tools.ietf.org/html/rfc5426) (including SSL support)
+ * `com.cloudbees.syslog.integration.jul.SyslogHandler`: java.util.logging handler to output log messages to a Syslog server.
+
+
 
 ## Sample UDP sender using RFC 3614
 
