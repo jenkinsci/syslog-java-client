@@ -34,6 +34,7 @@ import java.math.BigInteger;
 import java.net.*;
 import java.security.cert.Certificate;
 import java.security.cert.X509Certificate;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.logging.Level;
 
 /**
@@ -44,6 +45,7 @@ import java.util.logging.Level;
 @ThreadSafe
 public class TcpSyslogMessageSender extends AbstractSyslogMessageSender {
     public final static int SETTING_SOCKET_CONNECT_TIMEOUT_IN_MILLIS_DEFAULT_VALUE = 500;
+    public final static int SETTING_MAX_RETRY = 2;
 
     /**
      * {@link java.net.InetAddress InetAddress} of the remote Syslog Server.
@@ -64,28 +66,51 @@ public class TcpSyslogMessageSender extends AbstractSyslogMessageSender {
     private Writer writer;
     private int socketConnectTimeoutInMillis = SETTING_SOCKET_CONNECT_TIMEOUT_IN_MILLIS_DEFAULT_VALUE;
     private boolean ssl;
-
+    /**
+     * Number of retries to send a message before throwing an exception.
+     */
+    private int maxRetryCount = SETTING_MAX_RETRY;
+    /**
+     * Number of exceptions trying to send message.
+     */
+    protected final AtomicInteger trySendErrorCounter = new AtomicInteger();
 
     @Override
     public synchronized void sendMessage(@Nonnull SyslogMessage message) throws IOException {
-        ensureSyslogServerConnection();
         sendCounter.incrementAndGet();
         long nanosBefore = System.nanoTime();
 
         try {
-            if (logger.isLoggable(Level.FINEST)) {
-                logger.finest("Send syslog message " + message.toSyslogMessage(messageFormat));
+            Exception lastException = null;
+            for (int i = 0; i <= maxRetryCount; i++) {
+                try {
+                    if (logger.isLoggable(Level.FINEST)) {
+                        logger.finest("Send syslog message " + message.toSyslogMessage(messageFormat));
+                    }
+                    ensureSyslogServerConnection();
+                    message.toSyslogMessage(messageFormat, writer);
+                    // use the CR LF non transparent framing as described in "3.4.2.  Non-Transparent-Framing"
+                    writer.write("\r\n");
+                    writer.flush();
+                    return;
+                } catch (IOException e) {
+                    lastException = e;
+                    IoUtils.closeQuietly(socket, writer);
+                    trySendErrorCounter.incrementAndGet();
+                } catch (RuntimeException e) {
+                    lastException = e;
+                    IoUtils.closeQuietly(socket, writer);
+                    trySendErrorCounter.incrementAndGet();
+                }
             }
-            message.toSyslogMessage(messageFormat, writer);
-            // use the CR LF non transparent framing as described in "3.4.2.  Non-Transparent-Framing"
-            writer.write("\r\n");
-            writer.flush();
-        } catch (IOException e) {
-            sendErrorCounter.incrementAndGet();
-            throw e;
-        } catch (RuntimeException e) {
-            sendErrorCounter.incrementAndGet();
-            throw e;
+            if (lastException != null) {
+                sendErrorCounter.incrementAndGet();
+                if (lastException instanceof IOException) {
+                    throw (IOException) lastException;
+                } else if (lastException instanceof RuntimeException) {
+                    throw (RuntimeException) lastException;
+                }
+            }
         } finally {
             sendDurationInNanosCounter.addAndGet(System.nanoTime() - nanosBefore);
         }
@@ -190,5 +215,37 @@ public class TcpSyslogMessageSender extends AbstractSyslogMessageSender {
 
     public void setSsl(boolean ssl) {
         this.ssl = ssl;
+    }
+
+    public int getSocketConnectTimeoutInMillis() {
+        return socketConnectTimeoutInMillis;
+    }
+
+    public int getMaxRetryCount() {
+        return maxRetryCount;
+    }
+
+    public int getTrySendErrorCounter() {
+        return trySendErrorCounter.get();
+    }
+
+    @Override
+    public String toString() {
+        return "TcpSyslogMessageSender{" +
+                "syslogServerHostname='" + this.getSyslogServerHostname() + '\'' +
+                ", syslogServerPort='" + this.getSyslogServerPort() + '\'' +
+                ", ssl=" + ssl +
+                ", maxRetryCount=" + maxRetryCount +
+                ", socketConnectTimeoutInMillis=" + socketConnectTimeoutInMillis +
+                ", defaultAppName='" + defaultAppName + '\'' +
+                ", defaultFacility=" + defaultFacility +
+                ", defaultMessageHostname='" + defaultMessageHostname + '\'' +
+                ", defaultSeverity=" + defaultSeverity +
+                ", messageFormat=" + messageFormat +
+                ", sendCounter=" + sendCounter +
+                ", sendDurationInNanosCounter=" + sendDurationInNanosCounter +
+                ", sendErrorCounter=" + sendErrorCounter +
+                ", trySendErrorCounter=" + trySendErrorCounter +
+                '}';
     }
 }

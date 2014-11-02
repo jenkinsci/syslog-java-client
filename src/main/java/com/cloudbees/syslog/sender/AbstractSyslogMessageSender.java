@@ -133,4 +133,18 @@ public abstract class AbstractSyslogMessageSender implements SyslogMessageSender
     public void setDefaultSeverity(Severity defaultSeverity) {
         this.defaultSeverity = defaultSeverity;
     }
+
+    @Override
+    public String toString() {
+        return "AbstractSyslogMessageSender{" +
+                "defaultAppName='" + defaultAppName + '\'' +
+                ", defaultFacility=" + defaultFacility +
+                ", defaultMessageHostname='" + defaultMessageHostname + '\'' +
+                ", defaultSeverity=" + defaultSeverity +
+                ", messageFormat=" + messageFormat +
+                ", sendCounter=" + sendCounter +
+                ", sendDurationInNanosCounter=" + sendDurationInNanosCounter +
+                ", sendErrorCounter=" + sendErrorCounter +
+                '}';
+    }
 }

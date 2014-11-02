@@ -29,7 +29,7 @@ import java.sql.Timestamp;
  */
 public class TcpSyslogMessageSenderTest {
 
-    @Ignore
+    // @Ignore
     @Test
     public void send() throws Exception {
         TcpSyslogMessageSender messageSender = new TcpSyslogMessageSender();
@@ -40,6 +40,7 @@ public class TcpSyslogMessageSenderTest {
         messageSender.setSyslogServerHostname("logs2.papertrailapp.com");
         messageSender.setSyslogServerPort(46022);
         messageSender.setMessageFormat(MessageFormat.RFC_3164);
+        messageSender.setSsl(true);
         messageSender.sendMessage("unit test message over tcp éèà " + getClass() + " - " + new Timestamp(System.currentTimeMillis()));
     }
 
