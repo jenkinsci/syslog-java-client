@@ -34,6 +34,7 @@ import java.math.BigInteger;
 import java.net.*;
 import java.security.cert.Certificate;
 import java.security.cert.X509Certificate;
+import java.util.Objects;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.logging.Level;
 
@@ -118,7 +119,7 @@ public class TcpSyslogMessageSender extends AbstractSyslogMessageSender {
 
     private synchronized void ensureSyslogServerConnection() throws IOException {
         InetAddress inetAddress = syslogServerHostnameReference.get();
-        if (socket != null && !socket.getInetAddress().equals(inetAddress)) {
+        if (socket != null && !Objects.equals(socket.getInetAddress(), inetAddress)) {
             logger.info("InetAddress of the Syslog Server have changed, create a new connection. " +
                     "Before=" + socket.getInetAddress() + ", new=" + inetAddress);
             IoUtils.closeQuietly(socket, writer);
