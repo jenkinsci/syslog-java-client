@@ -82,11 +82,11 @@ public abstract class CachingReference<E> {
                         object = newObject();
                         lastCreationInNanos = System.nanoTime();
                     }
+                } finally {
                     // Downgrade by acquiring read lock before releasing write lock
                     rwl.readLock().lock();
-                } finally {
                     rwl.writeLock().unlock();
-                }
+                 }
             }
             return object;
         } finally {
