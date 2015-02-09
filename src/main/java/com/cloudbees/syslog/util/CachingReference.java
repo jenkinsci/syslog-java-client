@@ -86,7 +86,7 @@ public abstract class CachingReference<E> {
                     // Downgrade by acquiring read lock before releasing write lock
                     rwl.readLock().lock();
                     rwl.writeLock().unlock();
-                 }
+                }
             }
             return object;
         } finally {
