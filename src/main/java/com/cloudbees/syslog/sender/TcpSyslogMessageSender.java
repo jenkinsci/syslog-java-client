@@ -230,6 +230,14 @@ public class TcpSyslogMessageSender extends AbstractSyslogMessageSender {
         return trySendErrorCounter.get();
     }
 
+    public void setSocketConnectTimeoutInMillis(int socketConnectTimeoutInMillis) {
+        this.socketConnectTimeoutInMillis = socketConnectTimeoutInMillis;
+    }
+
+    public void setMaxRetryCount(int maxRetryCount) {
+        this.maxRetryCount = maxRetryCount;
+    }
+
     @Override
     public String toString() {
         return "TcpSyslogMessageSender{" +
