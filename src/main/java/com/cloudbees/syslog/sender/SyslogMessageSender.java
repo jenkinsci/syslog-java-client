@@ -27,7 +27,7 @@ import java.util.concurrent.TimeUnit;
 
 /**
  * Send messages to a Syslog server.
- * <p/>
+ *
  * Implementation <strong>MUST</strong> be thread safe.
  *
  * @author <a href="mailto:cleclerc@cloudbees.com">Cyrille Le Clerc</a>

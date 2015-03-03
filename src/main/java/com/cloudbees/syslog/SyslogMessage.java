@@ -33,7 +33,7 @@ import java.util.concurrent.TimeUnit;
 
 /**
  * Syslog message as defined in <a href="https://tools.ietf.org/html/rfc5424">RFC 5424 - The Syslog Protocol</a>.
- * <p/>
+ *
  * Also compatible with <a href="http://tools.ietf.org/html/rfc3164">RFC-3164: The BSD syslog Protocol</a>,
  *
  * @author <a href="mailto:cleclerc@cloudbees.com">Cyrille Le Clerc</a>

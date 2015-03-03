@@ -32,7 +32,7 @@ import java.util.logging.Level;
 
 /**
  * Syslog message sender over UDP.
- * <p/>
+ *
  * TODO optimize performances recycling the byte arrays. Note: {@link java.io.ByteArrayOutputStream}
  * can be subclassed to access to the underlying {@code byte[]}.
  *
@@ -42,15 +42,15 @@ import java.util.logging.Level;
 public class UdpSyslogMessageSender extends AbstractSyslogMessageSender {
     /**
      * {@link java.net.InetAddress InetAddress} of the remote Syslog Server.
-     * <p/>
+     *
      * The {@code InetAddress} is refreshed regularly to handle DNS changes (default {@link #DEFAULT_INET_ADDRESS_TTL_IN_MILLIS})
-     * <p/>
+     *
      * Default value: {@link #DEFAULT_SYSLOG_HOST}
      */
     protected CachingReference<InetAddress> syslogServerHostnameReference;
     /**
      * Listen port of the remote Syslog server.
-     * <p/>
+     *
      * Default: {@link #DEFAULT_SYSLOG_PORT}
      */
     protected int syslogServerPort = DEFAULT_SYSLOG_PORT;

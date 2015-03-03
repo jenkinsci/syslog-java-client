@@ -37,7 +37,7 @@ public class LogManagerHelper {
 
     /**
      * Visible version of {@link java.util.logging.LogManager#getLevelProperty(String, java.util.logging.Level)}.
-     * <p/>
+     *
      * If the property is not defined or cannot be parsed we return the given default value.
      */
     @Nullable
@@ -54,9 +54,9 @@ public class LogManagerHelper {
 
     /**
      * Visible version of {@link java.util.logging.LogManager#getFilterProperty(String, java.util.logging.Filter)}.
-     * <p/>
+     *
      * We return an instance of the class named by the "name" property.
-     * <p/>
+     *
      * If the property is not defined or has problems we return the defaultValue.
      */
     @Nullable
@@ -79,9 +79,9 @@ public class LogManagerHelper {
 
     /**
      * Visible version of {@link java.util.logging.LogManager#getFormatterProperty(String, java.util.logging.Formatter)} .
-     * <p/>
+     *
      * We return an instance of the class named by the "name" property.
-     * <p/>
+     *
      * If the property is not defined or has problems we return the defaultValue.
      */
     public static Formatter getFormatterProperty(@Nonnull LogManager manager, @Nullable String name, @Nullable Formatter defaultValue) {
@@ -103,7 +103,7 @@ public class LogManagerHelper {
 
     /**
      * Visible version of {@link java.util.logging.LogManager#getStringProperty(String, String)}.
-     * <p/>
+     *
      * If the property is not defined we return the given default value.
      */
     public static String getStringProperty(@Nonnull LogManager manager, @Nullable String name, String defaultValue) {
@@ -117,9 +117,9 @@ public class LogManagerHelper {
 
     /**
      * Visible version of {@link java.util.logging.LogManager#getIntProperty(String, int)}.
-     * <p/>
+     *
      * Method to get an integer property.
-     * <p/>
+     *
      * If the property is not defined or cannot be parsed we return the given default value.
      */
     public static int getIntProperty(@Nonnull LogManager manager, @Nullable String name, int defaultValue) {
@@ -137,9 +137,9 @@ public class LogManagerHelper {
 
     /**
      * Visible version of {@link java.util.logging.LogManager#getIntProperty(String, int)}.
-     * <p/>
+     *
      * Method to get a boolean property.
-     * <p/>
+     *
      * If the property is not defined or cannot be parsed we return the given default value.
      */
     public static boolean getBooleanProperty(@Nonnull LogManager manager, @Nullable String name, boolean defaultValue) {

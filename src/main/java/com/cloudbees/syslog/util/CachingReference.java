@@ -22,16 +22,16 @@ import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 /**
  * Maintains a cached version of the {@code Object} that it holds and handle the renewal of this object upon expiration.
- * <p/>
+ *
  * Greatly inspired by the {@code CachedData} sample provided in the javadoc
  * of {@link java.util.concurrent.locks.ReentrantReadWriteLock}.
- * <p/>
+ *
  * {@code Object} is created implementing the {@link #newObject()} method.
- * <p/>
- * <p/>
+ *
+ *
  * Sample to get an {@code InetAddress} refreshed against a DNS every 10 seconds:
- * <code><pre>
- * CachingReference myRemoteServerAddress = new CachingReference<InetAddress>(10, TimeUnit.SECONDS) {
+ * <pre><code>
+ * CachingReference myRemoteServerAddress = new CachingReference&lt;InetAddress&gt;(10, TimeUnit.SECONDS) {
  *     protected InetAddress newObject() {
  *         try {
  *             return InetAddress.getByName(myRemoteServerHostname);
@@ -40,7 +40,7 @@ import java.util.concurrent.locks.ReentrantReadWriteLock;
  *         }
  *     }
  * }
- * </pre></code>
+ * </code></pre>
  *
  * @author <a href="mailto:cleclerc@cloudbees.com">Cyrille Le Clerc</a>
  */
