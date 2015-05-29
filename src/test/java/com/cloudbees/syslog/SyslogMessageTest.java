@@ -60,7 +60,7 @@ public class SyslogMessageTest {
     public void testRfc3164Format() throws Exception {
 
         Calendar cal = Calendar.getInstance();
-        cal.setTimeZone(TimeZone.getTimeZone("GMT"));
+        cal.setTimeZone(TimeZone.getDefault());
         cal.set(2013, Calendar.DECEMBER, 5, 10, 30, 5);
         cal.set(Calendar.MILLISECOND, 0);
 

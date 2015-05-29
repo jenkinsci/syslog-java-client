@@ -69,10 +69,18 @@ public class SyslogMessage {
                 Locale.US,
                 TimeZone.getTimeZone("GMT"),
                 concurrency);
+
+        /**
+         * According to <a href="http://tools.ietf.org/html/rfc3164#section-4.1.2">RFC31614- 4.1.2 HEADER Part of a syslog Packet</a>,
+         * we should use local time and not GMT.
+         * <quote>
+         *     The TIMESTAMP field is the local time and is in the format of "Mmm dd hh:mm:ss" (without the quote marks)
+         * </quote>
+         */
         rfc3164DateFormat = new ConcurrentDateFormat(
                 "MMM dd HH:mm:ss",
                 Locale.US,
-                TimeZone.getTimeZone("GMT"),
+                TimeZone.getDefault(),
                 concurrency);
     }
 
