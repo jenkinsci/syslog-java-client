@@ -60,7 +60,7 @@ messageSender.setDefaultFacility(Facility.USER);
 messageSender.setDefaultSeverity(Severity.INFORMATIONAL);
 messageSender.setSyslogServerHostname("127.0.0.1");
 messageSender.setSyslogServerPort(1234);
-messageSender.setMessageFormat(MessageFormat.RFC_3614); // optional, default is RFC 3164
+messageSender.setMessageFormat(MessageFormat.RFC_3164); // optional, default is RFC 3164
 messageSender.setSsl(false);
 
 // send a Syslog message
@@ -79,7 +79,7 @@ messageSender.setDefaultFacility(Facility.USER);
 messageSender.setDefaultSeverity(Severity.INFORMATIONAL);
 messageSender.setSyslogServerHostname("127.0.0.1");
 messageSender.setSyslogServerPort(1234);
-messageSender.setMessageFormat(MessageFormat.RFC_3614); // optional, default is RFC 3164
+messageSender.setMessageFormat(MessageFormat.RFC_3164); // optional, default is RFC 3164
 messageSender.setSsl(true);
 
 // send a Syslog message
