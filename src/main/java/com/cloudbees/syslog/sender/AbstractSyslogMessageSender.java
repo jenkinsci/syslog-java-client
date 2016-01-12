@@ -136,7 +136,7 @@ public abstract class AbstractSyslogMessageSender implements SyslogMessageSender
 
     @Override
     public String toString() {
-        return "AbstractSyslogMessageSender{" +
+        return getClass().getName() + "{" +
                 "defaultAppName='" + defaultAppName + '\'' +
                 ", defaultFacility=" + defaultFacility +
                 ", defaultMessageHostname='" + defaultMessageHostname + '\'' +

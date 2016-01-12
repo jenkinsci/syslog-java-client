@@ -120,11 +120,29 @@ public class UdpSyslogMessageSender extends AbstractSyslogMessageSender {
         this.syslogServerPort = syslogServerPort;
     }
 
+    @Nullable
     public String getSyslogServerHostname() {
-        return syslogServerHostnameReference.get().getHostName();
+        InetAddress inetAddress = syslogServerHostnameReference.get();
+        return inetAddress == null ? null : inetAddress.getHostName();
     }
 
     public int getSyslogServerPort() {
         return syslogServerPort;
+    }
+
+    @Override
+    public String toString() {
+        return getClass().getName() + "{" +
+                "syslogServerHostname='" + this.getSyslogServerHostname() + '\'' +
+                ", syslogServerPort='" + this.getSyslogServerPort() + '\'' +
+                ", defaultAppName='" + defaultAppName + '\'' +
+                ", defaultFacility=" + defaultFacility +
+                ", defaultMessageHostname='" + defaultMessageHostname + '\'' +
+                ", defaultSeverity=" + defaultSeverity +
+                ", messageFormat=" + messageFormat +
+                ", sendCounter=" + sendCounter +
+                ", sendDurationInNanosCounter=" + sendDurationInNanosCounter +
+                ", sendErrorCounter=" + sendErrorCounter +
+                '}';
     }
 }

@@ -202,8 +202,10 @@ public class TcpSyslogMessageSender extends AbstractSyslogMessageSender {
         this.syslogServerPort = syslogServerPort;
     }
 
+    @Nullable
     public String getSyslogServerHostname() {
-        return syslogServerHostnameReference.get().getHostName();
+        InetAddress inetAddress = syslogServerHostnameReference.get();
+        return inetAddress == null ? null : inetAddress.getHostName();
     }
 
     public int getSyslogServerPort() {
@@ -240,7 +242,7 @@ public class TcpSyslogMessageSender extends AbstractSyslogMessageSender {
 
     @Override
     public String toString() {
-        return "TcpSyslogMessageSender{" +
+        return getClass().getName() + "{" +
                 "syslogServerHostname='" + this.getSyslogServerHostname() + '\'' +
                 ", syslogServerPort='" + this.getSyslogServerPort() + '\'' +
                 ", ssl=" + ssl +
