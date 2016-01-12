@@ -19,7 +19,7 @@
     <parent>
         <groupId>com.cloudbees</groupId>
         <artifactId>cloudbees-oss-parent</artifactId>
-        <version>6</version>
+        <version>7</version>
     </parent>
 
     <artifactId>syslog-java-client</artifactId>
