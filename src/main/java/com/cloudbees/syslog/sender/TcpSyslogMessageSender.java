@@ -76,6 +76,9 @@ public class TcpSyslogMessageSender extends AbstractSyslogMessageSender {
      */
     protected final AtomicInteger trySendErrorCounter = new AtomicInteger();
 
+    // use the CR LF non transparent framing as described in "3.4.2.  Non-Transparent-Framing"
+    private String postfix = "\r\n";
+
     @Override
     public synchronized void sendMessage(@Nonnull SyslogMessage message) throws IOException {
         sendCounter.incrementAndGet();
@@ -90,8 +93,7 @@ public class TcpSyslogMessageSender extends AbstractSyslogMessageSender {
                     }
                     ensureSyslogServerConnection();
                     message.toSyslogMessage(messageFormat, writer);
-                    // use the CR LF non transparent framing as described in "3.4.2.  Non-Transparent-Framing"
-                    writer.write("\r\n");
+                    writer.write(postfix);
                     writer.flush();
                     return;
                 } catch (IOException e) {
@@ -238,6 +240,10 @@ public class TcpSyslogMessageSender extends AbstractSyslogMessageSender {
 
     public void setMaxRetryCount(int maxRetryCount) {
         this.maxRetryCount = maxRetryCount;
+    }
+
+    public void setPostfix(String postfix) {
+        this.postfix = postfix;
     }
 
     @Override
