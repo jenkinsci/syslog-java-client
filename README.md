@@ -30,7 +30,7 @@ messageSender.setMessageFormat(MessageFormat.RFC_3164); // optional, default is 
 messageSender.sendMessage("This is a test message");
 ```
 
-## Sample UDP sender using RFC 3164
+## Sample UDP sender using RFC 5424
 
 ```java
 
