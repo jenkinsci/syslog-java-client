@@ -15,10 +15,10 @@
  */
 package com.cloudbees.syslog;
 
-import org.junit.Test;
-
 import java.util.Calendar;
 import java.util.TimeZone;
+
+import org.junit.Test;
 
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
@@ -78,7 +78,7 @@ public class SyslogMessageTest {
                 .withMsg("a syslog message");
 
         String actual = message.toRfc3164SyslogMessage();
-        String expected = "<14>Dec 05 10:30:05 myserver.example.com my_app: a syslog message";
+        String expected = "<7>Dec 05 10:30:05 myserver.example.com my_app: a syslog message";
 
         assertThat(actual, is(expected));
 
