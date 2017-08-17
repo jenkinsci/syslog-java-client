@@ -30,6 +30,16 @@ public class SDElement implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
+    /**
+     * Reserved SD-IDs as documented in <a href="https://www.rfc-editor.org/rfc/rfc5424.txt">RFC-5424</a>
+     */
+    public static final String[] RESERVED_SDID = new String[]{
+        "timeQuality",
+        "tzKnown",
+        "isSynced",
+        "syncAccuracy"
+    };
+
     public SDElement(String sdID) {
         validateSDID(sdID);
         this.sdID = sdID;
@@ -130,6 +140,18 @@ public class SDElement implements Serializable {
         }
         if (sdName.contains("\"")) {
             throw new IllegalArgumentException("SD-ID cannot contain '\"'");
+        }
+        if (! sdName.contains("@")) {
+            boolean found = false;
+            for (String rn : RESERVED_SDID) {
+                if (rn.equals(sdName)) {
+                    found = true;
+                    break;
+                }
+            }
+            if (! found) {
+                throw new IllegalArgumentException("SD-ID is not known registered SDID: " + sdName);
+            }
         }
     }
 

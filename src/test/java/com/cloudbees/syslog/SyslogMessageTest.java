@@ -87,7 +87,6 @@ public class SyslogMessageTest {
         expected = "<14>1 2013-12-05T10:30:05.000Z myserver.example.com my_app - - [exampleSDID@32473 iut=\"3\" eventSource=\"Application\" eventID=\"1011\"][examplePriority@32473 class=\"high\"] a syslog message";
         
         assertThat(actual, is(expected));
-        
     }
 
     @Test
