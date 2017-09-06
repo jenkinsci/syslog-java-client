@@ -24,7 +24,9 @@ import java.io.Writer;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.Locale;
+import java.util.Set;
 import java.util.TimeZone;
 import java.util.concurrent.TimeUnit;
 
@@ -91,6 +93,7 @@ public class SyslogMessage {
     private String appName;
     private String procId;
     private String msgId;
+    private Set<SDElement> sdElements;
     /**
      * Use a {@link java.io.CharArrayWriter} instead of a {@link String}  or a {@code char[]} because middlewares like
      * Apache Tomcat use {@code CharArrayWriter} and it's convenient for pooling objects.
@@ -213,6 +216,26 @@ public class SyslogMessage {
             }
         });
     }
+    
+    public Set<SDElement> getSDElements() {
+        Set<SDElement> ssde = sdElements;
+        if (ssde == null) {
+            ssde = new HashSet<SDElement>(0);
+        }
+        return ssde;
+    }
+    
+    public void setSDElements(Set<SDElement> ssde) {
+        this.sdElements = ssde;
+    }
+    
+    public SyslogMessage withSDElement(SDElement sde) {
+        if (sdElements == null) {
+            sdElements = new HashSet<SDElement>();
+        }
+        sdElements.add(sde);
+        return this;
+    }
 
     /**
      * Generates a Syslog message complying to the <a href="http://tools.ietf.org/html/rfc5424">RFC-5424</a> format
@@ -290,7 +313,7 @@ public class SyslogMessage {
         out.write(SP);
         writeNillableValue(msgId, out);// Message ID
         out.write(SP);
-        out.write(NILVALUE); // structured data
+        writeStructuredDataOrNillableValue(sdElements, out);
         if (msg != null) {
             out.write(SP);
             msg.writeTo(out);
@@ -341,5 +364,54 @@ public class SyslogMessage {
         } else {
             out.write(value);
         }
+    }
+    
+    protected void writeStructuredDataOrNillableValue(@Nullable Set<SDElement> ssde, @Nonnull Writer out) throws IOException {
+        if (ssde == null || ssde.isEmpty()) {
+            out.write(NILVALUE);
+        } else {
+            for (SDElement sde : ssde) {
+                writeSDElement(sde, out);
+            }
+        }
+    }
+    
+    protected void writeSDElement(@Nonnull SDElement sde, @Nonnull Writer out) throws IOException {
+        out.write("[");
+        out.write(sde.getSdID());
+        for (SDParam sdp : sde.getSdParams()) {
+            writeSDParam(sdp, out);
+        }
+        out.write("]");
+    }
+    
+    protected void writeSDParam(@Nonnull SDParam sdp, @Nonnull Writer out) throws IOException {
+        out.write(SP);
+        out.write(sdp.getParamName());
+        out.write('=');
+        out.write('"');
+        out.write(getEscapedParamValue(sdp.getParamValue()));
+        out.write('"');
+    }
+    
+    protected String getEscapedParamValue(String paramValue) {
+        StringBuilder sb = new StringBuilder(paramValue.length());
+        
+        for (int i = 0; i < paramValue.length(); i++) {
+            char c = paramValue.charAt(i);
+            switch (c) {
+                // Falls through
+                case '"':
+                case '\\':
+                case ']':
+                    sb.append('\\');
+                    break;
+                default:
+                    break;
+            }
+            sb.append(c);
+        }
+        
+        return sb.toString();
     }
 }
