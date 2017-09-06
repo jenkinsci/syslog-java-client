@@ -17,7 +17,7 @@ Client library written in Java to send messages to a Syslog server.
 
 // Initialise sender
 UdpSyslogMessageSender messageSender = new UdpSyslogMessageSender();
-messageSender.setDefaultMessageHostName("myhostname"); // some syslog cloud services may use this field to transmit a secret key
+messageSender.setDefaultMessageHostname("myhostname"); // some syslog cloud services may use this field to transmit a secret key
 messageSender.setDefaultAppName("myapp");
 messageSender.setDefaultFacility(Facility.USER);
 messageSender.setDefaultSeverity(Severity.INFORMATIONAL);
@@ -30,13 +30,13 @@ messageSender.setMessageFormat(MessageFormat.RFC_3164); // optional, default is 
 messageSender.sendMessage("This is a test message");
 ```
 
-## Sample UDP sender using RFC 3164
+## Sample UDP sender using RFC 5424
 
 ```java
 
 // Initialise sender
 SyslogMessageUdpSender messageSender = new SyslogMessageUdpSender();
-messageSender.setDefaultMessageHostName("myhostname"); // some syslog cloud services may use this field to transmit a secret key
+messageSender.setDefaultMessageHostname("myhostname"); // some syslog cloud services may use this field to transmit a secret key
 messageSender.setDefaultAppName("myapp");
 messageSender.setDefaultFacility(Facility.USER);
 messageSender.setDefaultSeverity(Severity.INFORMATIONAL);
@@ -54,7 +54,7 @@ messageSender.sendMessage("This is a test message");
 
 // Initialise sender
 TcpSyslogMessageSender messageSender = new TcpSyslogMessageSender();
-messageSender.setDefaultMessageHostName("myhostname"); // some syslog cloud services may use this field to transmit a secret key
+messageSender.setDefaultMessageHostname("myhostname"); // some syslog cloud services may use this field to transmit a secret key
 messageSender.setDefaultAppName("myapp");
 messageSender.setDefaultFacility(Facility.USER);
 messageSender.setDefaultSeverity(Severity.INFORMATIONAL);
@@ -73,7 +73,7 @@ messageSender.sendMessage("This is a test message");
 
 // Initialise sender
 TcpSyslogMessageSender messageSender = new TcpSyslogMessageSender();
-messageSender.setDefaultMessageHostName("myhostname"); // some syslog cloud services may use this field to transmit a secret key
+messageSender.setDefaultMessageHostname("myhostname"); // some syslog cloud services may use this field to transmit a secret key
 messageSender.setDefaultAppName("myapp");
 messageSender.setDefaultFacility(Facility.USER);
 messageSender.setDefaultSeverity(Severity.INFORMATIONAL);
