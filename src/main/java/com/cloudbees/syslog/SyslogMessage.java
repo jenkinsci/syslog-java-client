@@ -15,9 +15,6 @@
  */
 package com.cloudbees.syslog;
 
-import com.cloudbees.syslog.util.CachingReference;
-import com.cloudbees.syslog.util.ConcurrentDateFormat;
-
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.io.CharArrayWriter;
@@ -30,6 +27,9 @@ import java.util.Date;
 import java.util.Locale;
 import java.util.TimeZone;
 import java.util.concurrent.TimeUnit;
+
+import com.cloudbees.syslog.util.CachingReference;
+import com.cloudbees.syslog.util.ConcurrentDateFormat;
 
 /**
  * Syslog message as defined in <a href="https://tools.ietf.org/html/rfc5424">RFC 5424 - The Syslog Protocol</a>.
@@ -267,10 +267,13 @@ public class SyslogMessage {
 
     /**
      * Generates an <a href="http://tools.ietf.org/html/rfc5424">RFC-5424</a> message.
+     *
+     * The priority is calculated by facility * 8 + severity, see
+     * <a href="https://tools.ietf.org/html/rfc5424#section-6.2.1">RFC-5424, Section 6.2.1</a>
      */
     public void toRfc5424SyslogMessage(Writer out) throws IOException {
 
-        int pri = facility.numericalCode() + severity.numericalCode();
+        int pri = facility.numericalCode() * 8 + severity.numericalCode();
 
         out.write('<');
         out.write(String.valueOf(pri));

@@ -37,95 +37,95 @@ public enum Facility implements Comparable<Facility> {
     /**
      * user-level messages, numerical code 1.
      */
-    USER(1 << 3, "USER"),
+    USER(1, "USER"),
     /**
      * mail system, numerical code 2.
      */
-    MAIL(2 << 3, "MAIL"),
+    MAIL(2, "MAIL"),
     /**
      * system daemons, numerical code 3.
      */
-    DAEMON(3 << 3, "DAEMON"),
+    DAEMON(3, "DAEMON"),
     /**
      * security/authorization messages, numerical code 4.
      */
-    AUTH(4 << 3, "AUTH"),
+    AUTH(4, "AUTH"),
     /**
      * messages generated internally by syslogd, numerical code 5.
      */
-    SYSLOG(5 << 3, "SYSLOG"),
+    SYSLOG(5, "SYSLOG"),
     /**
      * line printer subsystem, numerical code 6.
      */
-    LPR(6 << 3, "LPR"),
+    LPR(6, "LPR"),
     /**
      * network news subsystem, numerical code 7.
      */
-    NEWS(7 << 3, "NEWS"),
+    NEWS(7, "NEWS"),
     /**
      * UUCP subsystem, numerical code 8
      */
-    UUCP(8 << 3, "UUCP"),
+    UUCP(8, "UUCP"),
     /**
      * clock daemon, numerical code 9.
      */
-    CRON(9 << 3, "CRON"),
+    CRON(9, "CRON"),
     /**
      * security/authorization  messages, numerical code 10.
      */
-    AUTHPRIV(10 << 3, "AUTHPRIV"),
+    AUTHPRIV(10, "AUTHPRIV"),
     /**
      * ftp daemon, numerical code 11.
      */
-    FTP(11 << 3, "FTP"),
+    FTP(11, "FTP"),
     /**
      * NTP subsystem, numerical code 12.
      */
-    NTP(12 << 3, "NTP"),
+    NTP(12, "NTP"),
     /**
      * log audit, numerical code 13.
      */
-    AUDIT(13 << 3, "AUDIT"),
+    AUDIT(13, "AUDIT"),
     /**
      * log alert, numerical code 14.
      */
-    ALERT(14 << 3, "ALERT"),
+    ALERT(14, "ALERT"),
     /**
      * clock daemon, numerical code 15.
      */
-    CLOCK(15 << 3, "CLOCK"),
+    CLOCK(15, "CLOCK"),
     /**
      * reserved for local use, numerical code 16.
      */
-    LOCAL0(16 << 3, "LOCAL0"),
+    LOCAL0(16, "LOCAL0"),
     /**
      * reserved for local use, numerical code 17.
      */
-    LOCAL1(17 << 3, "LOCAL1"),
+    LOCAL1(17, "LOCAL1"),
     /**
      * reserved for local use, numerical code 18.
      */
-    LOCAL2(18 << 3, "LOCAL2"),
+    LOCAL2(18, "LOCAL2"),
     /**
      * reserved for local use, numerical code 19.
      */
-    LOCAL3(19 << 3, "LOCAL3"),
+    LOCAL3(19, "LOCAL3"),
     /**
      * reserved for local use, numerical code 20.
      */
-    LOCAL4(20 << 3, "LOCAL4"),
+    LOCAL4(20, "LOCAL4"),
     /**
      * reserved for local use, numerical code 21.
      */
-    LOCAL5(21 << 3, "LOCAL5"),
+    LOCAL5(21, "LOCAL5"),
     /**
      * reserved for local use, numerical code 22.
      */
-    LOCAL6(22 << 3, "LOCAL6"),
+    LOCAL6(22, "LOCAL6"),
     /**
      * reserved for local use, numerical code 23.
      */
-    LOCAL7(23 << 3, "LOCAL7");
+    LOCAL7(23, "LOCAL7");
 
     // mapping
     private final static Map<String, Facility> facilityFromLabel = new HashMap<String, Facility>();
