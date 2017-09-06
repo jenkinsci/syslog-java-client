@@ -40,15 +40,15 @@ public class UdpSyslogMessageSenderLoadTest {
         messageSender.setDefaultAppName("myapp");
         messageSender.setDefaultFacility(Facility.USER);
         messageSender.setDefaultSeverity(Severity.INFORMATIONAL);
-        // messageSender.setSyslogServerHostname("cloudbees1.papertrailapp.com");
-        messageSender.setSyslogServerHostname("127.0.0.1");
-        messageSender.setSyslogServerPort(18977);
+        messageSender.setSyslogServerHostname("logs2.papertrailapp.com");
+        // messageSender.setSyslogServerHostname("127.0.0.1");
+        messageSender.setSyslogServerPort(46022);
 
         final AtomicInteger count = new AtomicInteger();
 
 
         for (int i = 0; i < THREADS_COUNT; i++) {
-            final String prefix = "thread-" + i + "msg-";
+            final String prefix = "thread-" + i + "-udp-msg-";
 
             Runnable command = new Runnable() {
                 @Override
