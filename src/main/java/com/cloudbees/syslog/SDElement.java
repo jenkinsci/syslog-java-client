@@ -35,9 +35,8 @@ public class SDElement implements Serializable {
      */
     public static final String[] RESERVED_SDID = new String[]{
         "timeQuality",
-        "tzKnown",
-        "isSynced",
-        "syncAccuracy"
+        "origin",
+        "meta"
     };
 
     public SDElement(String sdID) {
