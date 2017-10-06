@@ -11,7 +11,7 @@ Client library written in Java to send messages to a Syslog server.
 
 ## Release Notes
 
-See https://github.com/CloudBees-community/syslog-java-client/releases/tag/syslog-java-client-1.1.0
+See https://github.com/CloudBees-community/syslog-java-client/releases/
 
 ## Using the Syslog Java Client with Maven 
 
