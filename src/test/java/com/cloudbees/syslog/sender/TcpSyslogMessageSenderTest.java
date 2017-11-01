@@ -31,7 +31,7 @@ public class TcpSyslogMessageSenderTest {
 
     // @Ignore
     @Test
-    public void send() throws Exception {
+    public void sendRfc3164_1() throws Exception {
         TcpSyslogMessageSender messageSender = new TcpSyslogMessageSender();
         messageSender.setDefaultMessageHostname("mysecretkey");
         messageSender.setDefaultAppName("myapp");
@@ -44,9 +44,8 @@ public class TcpSyslogMessageSenderTest {
         messageSender.sendMessage("unit test message over tcp éèà " + getClass() + " - " + new Timestamp(System.currentTimeMillis()));
     }
 
-    @Ignore
     @Test
-    public void send2() throws Exception {
+    public void sendRfc3164_2() throws Exception {
 
         SyslogMessage msg = new SyslogMessage()
                 .withAppName("my-app")
@@ -68,9 +67,8 @@ public class TcpSyslogMessageSenderTest {
     }
 
 
-    @Ignore
     @Test
-    public void sendOverSSL() throws Exception {
+    public void sendRfc3164OverSSL() throws Exception {
 
         SyslogMessage msg = new SyslogMessage()
                 .withAppName("my-app")

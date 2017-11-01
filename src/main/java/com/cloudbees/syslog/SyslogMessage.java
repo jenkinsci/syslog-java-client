@@ -353,7 +353,7 @@ public class SyslogMessage {
         writeNillableValue(appName, out); // appname
 
         if (msg != null) {
-            out.write(": ");
+            out.write(" ");
             msg.writeTo(out);
         }
     }
