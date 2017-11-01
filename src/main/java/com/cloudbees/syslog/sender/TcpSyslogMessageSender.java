@@ -206,6 +206,8 @@ public class TcpSyslogMessageSender extends AbstractSyslogMessageSender {
 
     @Nullable
     public String getSyslogServerHostname() {
+        if (syslogServerHostnameReference == null)
+            return null;
         InetAddress inetAddress = syslogServerHostnameReference.get();
         return inetAddress == null ? null : inetAddress.getHostName();
     }
