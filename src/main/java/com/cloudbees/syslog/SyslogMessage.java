@@ -341,7 +341,7 @@ public class SyslogMessage {
      */
     public void toRfc3164SyslogMessage(Writer out) throws IOException {
 
-        int pri = facility.numericalCode() + severity.numericalCode();
+        int pri = facility.numericalCode() * 8 + severity.numericalCode();
 
         out.write('<');
         out.write(Integer.toString(pri));
