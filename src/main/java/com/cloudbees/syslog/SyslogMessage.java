@@ -18,7 +18,6 @@ package com.cloudbees.syslog;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import java.io.ByteArrayOutputStream;
 import java.io.CharArrayWriter;
 import java.io.IOException;
 import java.io.StringWriter;
@@ -301,9 +300,7 @@ public class SyslogMessage {
      */
     public void toRfc5425SyslogMessage(Writer out) throws IOException {
 
-        StringWriter sw = new StringWriter(msg == null ? 32 : msg.size() + 32);
-        toRfc5424SyslogMessage(sw);
-        String rfc5424Message = sw.toString();
+        String rfc5424Message = toRfc5424SyslogMessage();
         int length = rfc5424Message.getBytes(StandardCharsets.UTF_8).length;
         out.write(String.valueOf(length));
         out.write(SP);
