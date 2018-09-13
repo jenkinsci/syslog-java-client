@@ -29,6 +29,35 @@ import static org.junit.Assert.assertThat;
 public class SyslogMessageTest {
 
     @Test
+    public void testRfc5425Format() throws Exception {
+        // GIVEN
+        Calendar cal = Calendar.getInstance();
+        cal.setTimeZone(TimeZone.getTimeZone("GMT"));
+        cal.set(2013, Calendar.DECEMBER, 5, 10, 30, 5);
+        cal.set(Calendar.MILLISECOND, 0);
+
+        System.out.println(SyslogMessage.rfc3339DateFormat.format(cal.getTime()));
+        System.out.println(cal.getTimeInMillis());
+
+
+        SyslogMessage message = new SyslogMessage()
+            .withTimestamp(cal.getTimeInMillis())
+            .withAppName("my_app")
+            .withHostname("myserver.example.com")
+            .withFacility(Facility.USER)
+            .withSeverity(Severity.INFORMATIONAL)
+            .withTimestamp(cal.getTimeInMillis())
+            .withMsg("a syslog message");
+
+        // WHEN
+        String actual = message.toRfc5425SyslogMessage();
+
+        // THEN
+        String expected = "81 <14>1 2013-12-05T10:30:05.000Z myserver.example.com my_app - - - a syslog message";
+        assertThat(actual, is(expected));
+    }
+
+    @Test
     public void testRfc5424Format() throws Exception {
 
         Calendar cal = Calendar.getInstance();

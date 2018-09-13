@@ -17,12 +17,14 @@ package com.cloudbees.syslog;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+
 import java.io.CharArrayWriter;
 import java.io.IOException;
 import java.io.StringWriter;
 import java.io.Writer;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
+import java.nio.charset.StandardCharsets;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Locale;
@@ -249,6 +251,8 @@ public class SyslogMessage {
                 return toRfc3164SyslogMessage();
             case RFC_5424:
                 return toRfc5424SyslogMessage();
+            case RFC_5425:
+                return toRfc5425SyslogMessage();
             default:
                 throw new IllegalStateException("Unsupported message format '" + messageFormat + "'");
         }
@@ -269,9 +273,38 @@ public class SyslogMessage {
             case RFC_5424:
                 toRfc5424SyslogMessage(out);
                 break;
+            case RFC_5425:
+                toRfc5425SyslogMessage(out);
+                break;
             default:
                 throw new IllegalStateException("Unsupported message format '" + messageFormat + "'");
         }
+    }
+
+    /**
+     * Generates an <a href="http://tools.ietf.org/html/rfc5424">RFC-5425</a> message.
+     */
+    public String toRfc5425SyslogMessage() {
+
+        StringWriter sw = new StringWriter(msg == null ? 32 : msg.size() + 32);
+        try {
+            toRfc5425SyslogMessage(sw);
+        } catch (IOException e) {
+            throw new IllegalStateException(e);
+        }
+        return sw.toString();
+    }
+
+    /**
+     * Generates an <a href="http://tools.ietf.org/html/rfc5425">RFC-5425</a> message.
+     */
+    public void toRfc5425SyslogMessage(Writer out) throws IOException {
+
+        String rfc5424Message = toRfc5424SyslogMessage();
+        int length = rfc5424Message.getBytes(StandardCharsets.UTF_8).length;
+        out.write(String.valueOf(length));
+        out.write(SP);
+        out.write(rfc5424Message);
     }
 
     /**

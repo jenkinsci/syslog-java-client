@@ -28,5 +28,9 @@ public enum MessageFormat {
     /**
      * <a href="https://tools.ietf.org/html/rfc5424">RFC 5424 - The Syslog Protocol</a>
      */
-    RFC_5424
+    RFC_5424,
+    /**
+     * <a href="https://tools.ietf.org/html/rfc5425">RFC 5425 - Transport Layer Security (TLS) Transport Mapping for Syslog</a>
+     */
+    RFC_5425
 }
