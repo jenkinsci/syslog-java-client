@@ -19,7 +19,7 @@
     <parent>
         <groupId>com.cloudbees</groupId>
         <artifactId>cloudbees-oss-parent</artifactId>
-        <version>7</version>
+        <version>8</version>
     </parent>
 
     <artifactId>syslog-java-client</artifactId>
@@ -89,7 +89,7 @@
             <plugin>
                 <groupId>org.apache.felix</groupId>
                 <artifactId>maven-bundle-plugin</artifactId>
-                <version>4.0.0</version>
+                <version>4.1.0</version>
                 <extensions>true</extensions>
             </plugin>
             <plugin>
