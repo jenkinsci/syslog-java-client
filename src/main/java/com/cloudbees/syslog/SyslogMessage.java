@@ -90,7 +90,7 @@ public class SyslogMessage {
 
     private Facility facility;
     private Severity severity;
-    private Date timestamp;
+    private Long timestamp;
     private String hostname;
     private String appName;
     private String procId;
@@ -129,20 +129,20 @@ public class SyslogMessage {
     }
 
     public Date getTimestamp() {
-        return timestamp;
+        return timestamp == null ? null : new Date(timestamp);
     }
 
     public void setTimestamp(Date timestamp) {
-        this.timestamp = timestamp;
+        this.timestamp = (timestamp == null ? null : timestamp.getTime());
     }
 
     public SyslogMessage withTimestamp(long timestamp) {
-        this.timestamp = new Date(timestamp);
+        this.timestamp = timestamp;
         return this;
     }
 
     public SyslogMessage withTimestamp(Date timestamp) {
-        this.timestamp = timestamp;
+        this.timestamp = (timestamp == null ? null : timestamp.getTime());
         return this;
     }
 
@@ -336,7 +336,7 @@ public class SyslogMessage {
         out.write('>');
         out.write('1'); // version
         out.write(SP);
-        out.write(rfc3339DateFormat.format(timestamp == null ? new Date() : timestamp)); // message time
+        out.write(rfc3339DateFormat.format(timestamp == null ? new Date() : new Date(timestamp))); // message time
         out.write(SP);
         out.write(hostname == null ? localhostNameReference.get() : hostname); // emitting server hostname
         out.write(SP);
@@ -379,7 +379,7 @@ public class SyslogMessage {
         out.write('<');
         out.write(Integer.toString(pri));
         out.write('>');
-        out.write(rfc3164DateFormat.format(timestamp == null ? new Date() : timestamp)); // message time
+        out.write(rfc3164DateFormat.format(timestamp == null ? new Date() : new Date(timestamp))); // message time
         out.write(SP);
         out.write((hostname == null) ? localhostNameReference.get() : hostname); // emitting server hostname
         out.write(SP);

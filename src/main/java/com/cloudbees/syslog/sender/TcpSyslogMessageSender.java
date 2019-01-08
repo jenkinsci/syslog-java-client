@@ -246,7 +246,7 @@ public class TcpSyslogMessageSender extends AbstractSyslogMessageSender {
         this.maxRetryCount = maxRetryCount;
     }
 
-    public void setPostfix(String postfix) {
+    public synchronized void setPostfix(String postfix) {
         this.postfix = postfix;
     }
 

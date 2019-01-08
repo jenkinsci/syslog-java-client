@@ -18,6 +18,7 @@ package com.cloudbees.syslog;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
@@ -33,11 +34,7 @@ public class SDElement implements Serializable {
     /**
      * Reserved SD-IDs as documented in <a href="https://www.rfc-editor.org/rfc/rfc5424.txt">RFC-5424</a>
      */
-    public static final String[] RESERVED_SDID = new String[]{
-        "timeQuality",
-        "origin",
-        "meta"
-    };
+    private final List<String> RESERVED_SDID = Collections.unmodifiableList(Arrays.asList("timeQuality", "origin", "meta"));
 
     public SDElement(String sdID) {
         validateSDID(sdID);
