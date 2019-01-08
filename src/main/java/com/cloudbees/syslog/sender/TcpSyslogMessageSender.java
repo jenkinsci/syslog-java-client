@@ -27,6 +27,7 @@ import javax.net.ssl.SSLSession;
 import javax.net.ssl.SSLSocket;
 import javax.net.ssl.SSLSocketFactory;
 import java.io.BufferedWriter;
+import java.io.Closeable;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
@@ -44,7 +45,7 @@ import java.util.logging.Level;
  * @author <a href="mailto:cleclerc@cloudbees.com">Cyrille Le Clerc</a>
  */
 @ThreadSafe
-public class TcpSyslogMessageSender extends AbstractSyslogMessageSender {
+public class TcpSyslogMessageSender extends AbstractSyslogMessageSender implements Closeable  {
     public final static int SETTING_SOCKET_CONNECT_TIMEOUT_IN_MILLIS_DEFAULT_VALUE = 500;
     public final static int SETTING_MAX_RETRY = 2;
 
@@ -268,5 +269,10 @@ public class TcpSyslogMessageSender extends AbstractSyslogMessageSender {
                 ", sendErrorCounter=" + sendErrorCounter +
                 ", trySendErrorCounter=" + trySendErrorCounter +
                 '}';
+    }
+
+    @Override
+    public void close() throws IOException {
+        this.socket.close();
     }
 }

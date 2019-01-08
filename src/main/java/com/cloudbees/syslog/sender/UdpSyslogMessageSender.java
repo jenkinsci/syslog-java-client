@@ -21,6 +21,7 @@ import com.cloudbees.syslog.util.CachingReference;
 import javax.annotation.Nullable;
 import javax.annotation.concurrent.ThreadSafe;
 import java.io.ByteArrayOutputStream;
+import java.io.Closeable;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
@@ -39,7 +40,7 @@ import java.util.logging.Level;
  * @author <a href="mailto:cleclerc@cloudbees.com">Cyrille Le Clerc</a>
  */
 @ThreadSafe
-public class UdpSyslogMessageSender extends AbstractSyslogMessageSender {
+public class UdpSyslogMessageSender extends AbstractSyslogMessageSender implements Closeable {
     /**
      * {@link java.net.InetAddress InetAddress} of the remote Syslog Server.
      *
@@ -146,5 +147,10 @@ public class UdpSyslogMessageSender extends AbstractSyslogMessageSender {
                 ", sendDurationInNanosCounter=" + sendDurationInNanosCounter +
                 ", sendErrorCounter=" + sendErrorCounter +
                 '}';
+    }
+
+    @Override
+    public void close() throws IOException {
+        this.datagramSocket.close();
     }
 }
