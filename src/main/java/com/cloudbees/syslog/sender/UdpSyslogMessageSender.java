@@ -102,6 +102,7 @@ public class UdpSyslogMessageSender extends AbstractSyslogMessageSender {
     }
 
 
+    @Override
     public void setSyslogServerHostname(final String syslogServerHostname) {
         this.syslogServerHostnameReference = new CachingReference<InetAddress>(DEFAULT_INET_ADDRESS_TTL_IN_NANOS) {
             @Nullable
@@ -116,6 +117,7 @@ public class UdpSyslogMessageSender extends AbstractSyslogMessageSender {
         };
     }
 
+    @Override
     public void setSyslogServerPort(int syslogServerPort) {
         this.syslogServerPort = syslogServerPort;
     }
