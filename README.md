@@ -10,7 +10,7 @@ Client library written in Java to send messages to a Syslog server.
    * `TcpSyslogMessageSender`: [RFC 5425 - Transport Layer Security (TLS) Transport Mapping for Syslog](http://tools.ietf.org/html/rfc5426) (including SSL support)
  * `com.cloudbees.syslog.integration.jul.SyslogHandler`: java.util.logging handler to output log messages to a Syslog server.
 
-## Release Notes
+## Release Notes and downloads
 
 See https://github.com/CloudBees-community/syslog-java-client/releases/
 
@@ -22,7 +22,7 @@ Add the following dependency in your pom.xml:
 <dependency>
     <groupId>com.cloudbees</groupId>
     <artifactId>syslog-java-client</artifactId>
-    <version>1.1.4</version>
+    <version>1.1.6</version>
 </dependency>
 ```
 
