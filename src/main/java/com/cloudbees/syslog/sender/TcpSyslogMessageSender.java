@@ -146,11 +146,11 @@ public class TcpSyslogMessageSender extends AbstractSyslogMessageSender implemen
             writer = null;
             try {
                 if (ssl) {
-                	if(sslContext == null) {
-                		socket = SSLSocketFactory.getDefault().createSocket();
-                	} else {
-                		socket = sslContext.getSocketFactory().createSocket();
-                	}
+                    if (sslContext == null) {
+                        socket = SSLSocketFactory.getDefault().createSocket();
+                    } else {
+                        socket = sslContext.getSocketFactory().createSocket();
+                    }
                 } else {
                     socket = SocketFactory.getDefault().createSocket();
                 }
