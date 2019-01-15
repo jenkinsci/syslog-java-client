@@ -23,6 +23,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.annotation.concurrent.ThreadSafe;
 import javax.net.SocketFactory;
+import javax.net.ssl.SSLContext;
 import javax.net.ssl.SSLSession;
 import javax.net.ssl.SSLSocket;
 import javax.net.ssl.SSLSocketFactory;
@@ -68,6 +69,7 @@ public class TcpSyslogMessageSender extends AbstractSyslogMessageSender implemen
     private Writer writer;
     private int socketConnectTimeoutInMillis = SETTING_SOCKET_CONNECT_TIMEOUT_IN_MILLIS_DEFAULT_VALUE;
     private boolean ssl;
+    private SSLContext sslContext;
     /**
      * Number of retries to send a message before throwing an exception.
      */
@@ -144,7 +146,11 @@ public class TcpSyslogMessageSender extends AbstractSyslogMessageSender implemen
             writer = null;
             try {
                 if (ssl) {
-                    socket = SSLSocketFactory.getDefault().createSocket();
+                	if(sslContext == null) {
+                		socket = SSLSocketFactory.getDefault().createSocket();
+                	} else {
+                		socket = sslContext.getSocketFactory().createSocket();
+                	}
                 } else {
                     socket = SocketFactory.getDefault().createSocket();
                 }
@@ -225,6 +231,14 @@ public class TcpSyslogMessageSender extends AbstractSyslogMessageSender implemen
 
     public void setSsl(boolean ssl) {
         this.ssl = ssl;
+    }
+    
+    public synchronized void setSSLContext(SSLContext sslContext) {
+        this.sslContext = sslContext; 
+    }
+    
+    public synchronized SSLContext getSSLContext() {
+        return this.sslContext; 
     }
 
     public int getSocketConnectTimeoutInMillis() {
