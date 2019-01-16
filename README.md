@@ -22,7 +22,7 @@ Add the following dependency in your pom.xml:
 <dependency>
     <groupId>com.cloudbees</groupId>
     <artifactId>syslog-java-client</artifactId>
-    <version>1.1.6</version>
+    <version>1.1.7</version>
 </dependency>
 ```
 
