@@ -29,6 +29,12 @@ Add the following dependency in your pom.xml:
 ## Sample UDP sender using RFC 3164
 
 ```java
+import com.cloudbees.syslog.Facility;
+import com.cloudbees.syslog.MessageFormat;
+import com.cloudbees.syslog.Severity;
+import com.cloudbees.syslog.sender.UdpSyslogMessageSender;
+
+...
 
 // Initialise sender
 UdpSyslogMessageSender messageSender = new UdpSyslogMessageSender();
@@ -41,7 +47,6 @@ messageSender.setSyslogServerHostname("127.0.0.1");
 messageSender.setSyslogServerPort(514);
 messageSender.setMessageFormat(MessageFormat.RFC_3164); // optional, default is RFC 3164
 
-
 // send a Syslog message
 messageSender.sendMessage("This is a test message");
 ```
@@ -49,9 +54,15 @@ messageSender.sendMessage("This is a test message");
 ## Sample UDP sender using RFC 5424
 
 ```java
+import com.cloudbees.syslog.Facility;
+import com.cloudbees.syslog.MessageFormat;
+import com.cloudbees.syslog.Severity;
+import com.cloudbees.syslog.sender.UdpSyslogMessageSender;
+
+...
 
 // Initialise sender
-SyslogMessageUdpSender messageSender = new SyslogMessageUdpSender();
+UdpSyslogMessageSender messageSender = new UdpSyslogMessageSender();
 messageSender.setDefaultMessageHostname("myhostname"); // some syslog cloud services may use this field to transmit a secret key
 messageSender.setDefaultAppName("myapp");
 messageSender.setDefaultFacility(Facility.USER);
@@ -67,6 +78,12 @@ messageSender.sendMessage("This is a test message");
 ## Sample TCP sender using RFC 3164
 
 ```java
+import com.cloudbees.syslog.Facility;
+import com.cloudbees.syslog.MessageFormat;
+import com.cloudbees.syslog.Severity;
+import com.cloudbees.syslog.sender.TcpSyslogMessageSender;
+
+...
 
 // Initialise sender
 TcpSyslogMessageSender messageSender = new TcpSyslogMessageSender();
@@ -86,6 +103,12 @@ messageSender.sendMessage("This is a test message");
 ## Sample TCP over SSL sender using RFC 3164
 
 ```java
+import com.cloudbees.syslog.Facility;
+import com.cloudbees.syslog.MessageFormat;
+import com.cloudbees.syslog.Severity;
+import com.cloudbees.syslog.sender.TcpSyslogMessageSender;
+
+...
 
 // Initialise sender
 TcpSyslogMessageSender messageSender = new TcpSyslogMessageSender();
@@ -105,6 +128,12 @@ messageSender.sendMessage("This is a test message");
 ## Sample TCP over SSL sender using RFC 5425
 
 ```java
+import com.cloudbees.syslog.Facility;
+import com.cloudbees.syslog.MessageFormat;
+import com.cloudbees.syslog.Severity;
+import com.cloudbees.syslog.sender.TcpSyslogMessageSender;
+
+...
 
 // Initialise sender
 TcpSyslogMessageSender messageSender = new TcpSyslogMessageSender();
