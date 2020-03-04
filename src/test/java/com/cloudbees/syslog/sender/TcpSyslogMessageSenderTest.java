@@ -33,18 +33,23 @@ public class TcpSyslogMessageSenderTest {
     @Test
     public void send() throws Exception {
         TcpSyslogMessageSender messageSender = new TcpSyslogMessageSender();
-        messageSender.setDefaultMessageHostname("mysecretkey");
+        // messageSender.setDefaultMessageHostname("mysecretkey");
         messageSender.setDefaultAppName("myapp");
         messageSender.setDefaultFacility(Facility.USER);
         messageSender.setDefaultSeverity(Severity.INFORMATIONAL);
-        messageSender.setSyslogServerHostname("logs2.papertrailapp.com");
-        messageSender.setSyslogServerPort(46022);
+
+        // messageSender.setSyslogServerHostname("logs2.papertrailapp.com");
+        // messageSender.setSyslogServerPort(46022);
+        // messageSender.setSsl(true);
+
+        messageSender.setSyslogServerHostname("localhost");
+        messageSender.setSyslogServerPort(9000);
+
         messageSender.setMessageFormat(MessageFormat.RFC_3164);
-        messageSender.setSsl(true);
         messageSender.sendMessage("unit test message over tcp éèà " + getClass() + " - " + new Timestamp(System.currentTimeMillis()));
     }
 
-    @Ignore
+    // @Ignore
     @Test
     public void send2() throws Exception {
 
@@ -57,10 +62,15 @@ public class TcpSyslogMessageSenderTest {
                 .withTimestamp(System.currentTimeMillis());
 
         TcpSyslogMessageSender messageSender = new TcpSyslogMessageSender();
-        messageSender.setSyslogServerHostname("logs2.papertrailapp.com");
-        messageSender.setSyslogServerPort(46022);
+
+        // messageSender.setSyslogServerHostname("logs2.papertrailapp.com");
+        // messageSender.setSyslogServerPort(46022);
+        // messageSender.setSsl(true);
+
+        messageSender.setSyslogServerHostname("localhost");
+        messageSender.setSyslogServerPort(9000);
+
         messageSender.setMessageFormat(MessageFormat.RFC_3164);
-        messageSender.setSsl(true);
 
         System.out.println(msg.toSyslogMessage(messageSender.getMessageFormat()));
 

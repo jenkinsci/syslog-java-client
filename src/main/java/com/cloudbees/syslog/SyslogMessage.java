@@ -34,6 +34,7 @@ import java.util.concurrent.TimeUnit;
 
 import com.cloudbees.syslog.util.CachingReference;
 import com.cloudbees.syslog.util.ConcurrentDateFormat;
+import com.cloudbees.syslog.util.ConcurrentRfc3164DateFormat;
 
 /**
  * Syslog message as defined in <a href="https://tools.ietf.org/html/rfc5424">RFC 5424 - The Syslog Protocol</a>.
@@ -48,7 +49,7 @@ public class SyslogMessage {
 
     private final static int DEFAULT_CONCURRENCY = 50;
     protected final static ConcurrentDateFormat rfc3339DateFormat;
-    protected final static ConcurrentDateFormat rfc3164DateFormat;
+    protected final static ConcurrentRfc3164DateFormat rfc3164DateFormat;
     private static CachingReference<String> localhostNameReference = new CachingReference<String>(10, TimeUnit.SECONDS) {
         @Override
         protected String newObject() {
@@ -81,9 +82,8 @@ public class SyslogMessage {
          *     The TIMESTAMP field is the local time and is in the format of "Mmm dd hh:mm:ss" (without the quote marks)
          * </quote>
          */
-        rfc3164DateFormat = new ConcurrentDateFormat(
-                "MMM dd HH:mm:ss",
-                Locale.US,
+        rfc3164DateFormat = new ConcurrentRfc3164DateFormat(
+                Locale.getDefault(),
                 TimeZone.getDefault(),
                 concurrency);
     }
