@@ -95,7 +95,6 @@ public class SyslogMessageTest {
         System.out.println(SyslogMessage.rfc3339DateFormat.format(cal.getTime()));
         System.out.println(cal.getTimeInMillis());
 
-
         SyslogMessage message = new SyslogMessage()
                 .withTimestamp(cal.getTimeInMillis())
                 .withAppName("my_app")
@@ -119,15 +118,15 @@ public class SyslogMessageTest {
     }
 
     @Test
-    public void testRfc3164Format() throws Exception {
+    public void testRfc3164Format_withTwoDigitsDay() throws Exception {
 
         Calendar cal = Calendar.getInstance();
         cal.setTimeZone(TimeZone.getDefault());
-        cal.set(2013, Calendar.DECEMBER, 5, 10, 30, 5);
+        cal.set(2013, Calendar.DECEMBER, 15, 10, 30, 5);
         cal.set(Calendar.MILLISECOND, 0);
 
-        System.out.println(SyslogMessage.rfc3339DateFormat.format(cal.getTime()));
-        System.out.println(cal.getTimeInMillis());
+        // System.out.println(SyslogMessage.rfc3339DateFormat.format(cal.getTime()));
+        // System.out.println(cal.getTimeInMillis());
 
 
         SyslogMessage message = new SyslogMessage()
@@ -140,9 +139,37 @@ public class SyslogMessageTest {
                 .withMsg("a syslog message");
 
         String actual = message.toRfc3164SyslogMessage();
-        String expected = "<14>Dec 05 10:30:05 myserver.example.com my_app: a syslog message";
+        String expected = "<14>Dec 15 10:30:05 myserver.example.com my_app: a syslog message";
 
         assertThat(actual, is(expected));
+    }
 
+    /**
+     * https://tools.ietf.org/html/rfc3164#section-4.1.2
+     */
+    @Test
+    public void testRfc3164Format_withSingleDigitDay() throws Exception {
+
+        Calendar cal = Calendar.getInstance();
+        cal.setTimeZone(TimeZone.getDefault());
+        cal.set(2013, Calendar.AUGUST, 7, 10, 30, 5);
+        cal.set(Calendar.MILLISECOND, 0);
+
+        // System.out.println(SyslogMessage.rfc3339DateFormat.format(cal.getTime()));
+        // System.out.println(cal.getTimeInMillis());
+
+        SyslogMessage message = new SyslogMessage()
+                .withTimestamp(cal.getTimeInMillis())
+                .withAppName("my_app")
+                .withHostname("myserver.example.com")
+                .withFacility(Facility.USER)
+                .withSeverity(Severity.INFORMATIONAL)
+                .withTimestamp(cal.getTimeInMillis())
+                .withMsg("a syslog message");
+
+        String actual = message.toRfc3164SyslogMessage();
+        String expected = "<14>Aug  7 10:30:05 myserver.example.com my_app: a syslog message";
+
+        assertThat(actual, is(expected));
     }
 }
