@@ -48,6 +48,7 @@ import java.util.logging.Level;
 @ThreadSafe
 public class TcpSyslogMessageSender extends AbstractSyslogMessageSender implements Closeable  {
     public final static int SETTING_SOCKET_CONNECT_TIMEOUT_IN_MILLIS_DEFAULT_VALUE = 500;
+    public final static int SETTING_SOCKET_SO_TIMEOUT_IN_MILLIS_DEFAULT_VALUE = 0;
     public final static int SETTING_MAX_RETRY = 2;
 
     /**
@@ -68,6 +69,7 @@ public class TcpSyslogMessageSender extends AbstractSyslogMessageSender implemen
     private Socket socket;
     private Writer writer;
     private int socketConnectTimeoutInMillis = SETTING_SOCKET_CONNECT_TIMEOUT_IN_MILLIS_DEFAULT_VALUE;
+    private int socketSoTimeout = SETTING_SOCKET_SO_TIMEOUT_IN_MILLIS_DEFAULT_VALUE;
     private boolean ssl;
     private SSLContext sslContext;
     /**
@@ -154,6 +156,7 @@ public class TcpSyslogMessageSender extends AbstractSyslogMessageSender implemen
                 } else {
                     socket = SocketFactory.getDefault().createSocket();
                 }
+                socket.setSoTimeout(socketSoTimeout);
                 socket.setKeepAlive(true);
                 socket.connect(
                         new InetSocketAddress(inetAddress, syslogServerPort),
@@ -245,6 +248,10 @@ public class TcpSyslogMessageSender extends AbstractSyslogMessageSender implemen
         return socketConnectTimeoutInMillis;
     }
 
+    public int getSocketSoTimeout() {
+        return socketSoTimeout;
+    }
+
     public int getMaxRetryCount() {
         return maxRetryCount;
     }
@@ -255,6 +262,10 @@ public class TcpSyslogMessageSender extends AbstractSyslogMessageSender implemen
 
     public void setSocketConnectTimeoutInMillis(int socketConnectTimeoutInMillis) {
         this.socketConnectTimeoutInMillis = socketConnectTimeoutInMillis;
+    }
+
+    public void setSocketSoTimeout(int socketSoTimeout) {
+        this.socketSoTimeout = socketSoTimeout;
     }
 
     public void setMaxRetryCount(int maxRetryCount) {
@@ -273,6 +284,7 @@ public class TcpSyslogMessageSender extends AbstractSyslogMessageSender implemen
                 ", ssl=" + ssl +
                 ", maxRetryCount=" + maxRetryCount +
                 ", socketConnectTimeoutInMillis=" + socketConnectTimeoutInMillis +
+                ", socketSoTimeout=" + socketSoTimeout +
                 ", defaultAppName='" + defaultAppName + '\'' +
                 ", defaultFacility=" + defaultFacility +
                 ", defaultMessageHostname='" + defaultMessageHostname + '\'' +
