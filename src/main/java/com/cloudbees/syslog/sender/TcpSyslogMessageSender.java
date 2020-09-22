@@ -164,10 +164,15 @@ public class TcpSyslogMessageSender extends AbstractSyslogMessageSender implemen
             	
             	if(currentProxyConfig == null) {
             		socket = socketFactory.createSocket();
+            		socket.setKeepAlive(true);
+            		socket.connect(
+                    		syslogServer,
+                            socketConnectTimeoutInMillis);
             	}else {
             		final InetSocketAddress proxyAddr = new InetSocketAddress(currentProxyConfig.getHostnameReference().get(), currentProxyConfig.getPort());
             		final Socket underlying = new Socket(new Proxy(Proxy.Type.HTTP, proxyAddr));
-                    underlying.connect(syslogServer);
+            		underlying.setKeepAlive(true);
+            		underlying.connect(syslogServer);
                     socket = ((SSLSocketFactory)socketFactory).createSocket(
                           underlying,
                           currentProxyConfig.getHostname(),
@@ -175,10 +180,6 @@ public class TcpSyslogMessageSender extends AbstractSyslogMessageSender implemen
                           true);
             	}
                 
-                socket.setKeepAlive(true);
-                socket.connect(
-                		syslogServer,
-                        socketConnectTimeoutInMillis);
 
                 if (socket instanceof SSLSocket && logger.isLoggable(Level.FINER)) {
                     try {
