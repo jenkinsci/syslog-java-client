@@ -131,19 +131,36 @@ public class TcpSyslogMessageSender extends AbstractSyslogMessageSender implemen
         }
     }
 
+    /**
+     * @return true if not proxy connected and the socket is connected to current configured syslog 
+     */
+    private boolean notProxyConnectedAddressChange(final InetAddress inetAddress) {
+    	return proxyConnectedSyslogServer == null && !Objects.equals(socket.getInetAddress(), inetAddress);
+    }
+    
+    /**
+     * @return true if currentProxyConfig status does not match proxyConnectedSyslogServer
+     */
+    private boolean proxyUseHasChanged(final ProxyConfig currentProxyConfig) {
+    	return (currentProxyConfig != null && proxyConnectedSyslogServer == null)
+		|| (currentProxyConfig == null && proxyConnectedSyslogServer != null);
+    }
+    
+    /**
+     * @return true if proxy connected and either proxy connection or syslog server connection have changed
+     */
+    private boolean proxyConnectedAddressChange(final ProxyConfig currentProxyConfig) {
+    	return proxyConnectedSyslogServer != null && (!Objects.equals(socket.getInetAddress(), proxyConnectedSyslogServer) 
+    			|| !Objects.equals(socket.getInetAddress(), currentProxyConfig.getHostnameReference().get()));
+    }
+    
     private synchronized void ensureSyslogServerConnection() throws IOException {
         InetAddress inetAddress = syslogServerHostnameReference.get();
         final ProxyConfig currentProxyConfig = this.proxyConfig;
-        if (socket != null && 
-        		//If not proxy connected check that socket is connected to current configured syslog 
-        		((proxyConnectedSyslogServer == null && !Objects.equals(socket.getInetAddress(), inetAddress))
-        		//If proxy configured but last connection was not via proxy
-        		|| (currentProxyConfig != null && proxyConnectedSyslogServer == null)
-        		//If proxy not configured but last connection was via proxy
-        		|| (currentProxyConfig == null && proxyConnectedSyslogServer != null)
-        		//If proxy connected check that socket is connected to current configured proxy and last connected syslog matches current configured syslog 
-        		|| (proxyConnectedSyslogServer != null && !Objects.equals(socket.getInetAddress(), proxyConnectedSyslogServer) &&
-        		!Objects.equals(socket.getInetAddress(), currentProxyConfig.getHostnameReference().get())))) {
+        if (socket != null && (
+        		notProxyConnectedAddressChange(inetAddress)
+        		|| proxyUseHasChanged(currentProxyConfig)
+        		|| proxyConnectedAddressChange(currentProxyConfig))) {
             logger.info("InetAddress of the Syslog Server have changed, create a new connection. " +
                     "Before=" + socket.getInetAddress() + ", new=" + inetAddress);
             IoUtils.closeQuietly(socket, writer);
