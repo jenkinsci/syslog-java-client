@@ -23,10 +23,12 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.annotation.concurrent.ThreadSafe;
 import javax.net.SocketFactory;
+import javax.net.ssl.SSLContext;
 import javax.net.ssl.SSLSession;
 import javax.net.ssl.SSLSocket;
 import javax.net.ssl.SSLSocketFactory;
 import java.io.BufferedWriter;
+import java.io.Closeable;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
@@ -44,7 +46,7 @@ import java.util.logging.Level;
  * @author <a href="mailto:cleclerc@cloudbees.com">Cyrille Le Clerc</a>
  */
 @ThreadSafe
-public class TcpSyslogMessageSender extends AbstractSyslogMessageSender {
+public class TcpSyslogMessageSender extends AbstractSyslogMessageSender implements Closeable  {
     public final static int SETTING_SOCKET_CONNECT_TIMEOUT_IN_MILLIS_DEFAULT_VALUE = 500;
     public final static int SETTING_MAX_RETRY = 2;
 
@@ -67,6 +69,7 @@ public class TcpSyslogMessageSender extends AbstractSyslogMessageSender {
     private Writer writer;
     private int socketConnectTimeoutInMillis = SETTING_SOCKET_CONNECT_TIMEOUT_IN_MILLIS_DEFAULT_VALUE;
     private boolean ssl;
+    private SSLContext sslContext;
     /**
      * Number of retries to send a message before throwing an exception.
      */
@@ -75,6 +78,9 @@ public class TcpSyslogMessageSender extends AbstractSyslogMessageSender {
      * Number of exceptions trying to send message.
      */
     protected final AtomicInteger trySendErrorCounter = new AtomicInteger();
+
+    // use the CR LF non transparent framing as described in "3.4.2.  Non-Transparent-Framing"
+    private String postfix = "\r\n";
 
     @Override
     public synchronized void sendMessage(@Nonnull SyslogMessage message) throws IOException {
@@ -90,8 +96,7 @@ public class TcpSyslogMessageSender extends AbstractSyslogMessageSender {
                     }
                     ensureSyslogServerConnection();
                     message.toSyslogMessage(messageFormat, writer);
-                    // use the CR LF non transparent framing as described in "3.4.2.  Non-Transparent-Framing"
-                    writer.write("\r\n");
+                    writer.write(postfix);
                     writer.flush();
                     return;
                 } catch (IOException e) {
@@ -141,7 +146,11 @@ public class TcpSyslogMessageSender extends AbstractSyslogMessageSender {
             writer = null;
             try {
                 if (ssl) {
-                    socket = SSLSocketFactory.getDefault().createSocket();
+                    if (sslContext == null) {
+                        socket = SSLSocketFactory.getDefault().createSocket();
+                    } else {
+                        socket = sslContext.getSocketFactory().createSocket();
+                    }
                 } else {
                     socket = SocketFactory.getDefault().createSocket();
                 }
@@ -184,6 +193,7 @@ public class TcpSyslogMessageSender extends AbstractSyslogMessageSender {
         }
     }
 
+    @Override
     public void setSyslogServerHostname(final String syslogServerHostname) {
         this.syslogServerHostnameReference = new CachingReference<InetAddress>(DEFAULT_INET_ADDRESS_TTL_IN_NANOS) {
             @Nullable
@@ -198,12 +208,15 @@ public class TcpSyslogMessageSender extends AbstractSyslogMessageSender {
         };
     }
 
+    @Override
     public void setSyslogServerPort(int syslogServerPort) {
         this.syslogServerPort = syslogServerPort;
     }
 
     @Nullable
     public String getSyslogServerHostname() {
+        if (syslogServerHostnameReference == null)
+            return null;
         InetAddress inetAddress = syslogServerHostnameReference.get();
         return inetAddress == null ? null : inetAddress.getHostName();
     }
@@ -218,6 +231,14 @@ public class TcpSyslogMessageSender extends AbstractSyslogMessageSender {
 
     public void setSsl(boolean ssl) {
         this.ssl = ssl;
+    }
+    
+    public synchronized void setSSLContext(SSLContext sslContext) {
+        this.sslContext = sslContext; 
+    }
+    
+    public synchronized SSLContext getSSLContext() {
+        return this.sslContext; 
     }
 
     public int getSocketConnectTimeoutInMillis() {
@@ -240,6 +261,10 @@ public class TcpSyslogMessageSender extends AbstractSyslogMessageSender {
         this.maxRetryCount = maxRetryCount;
     }
 
+    public synchronized void setPostfix(String postfix) {
+        this.postfix = postfix;
+    }
+
     @Override
     public String toString() {
         return getClass().getName() + "{" +
@@ -258,5 +283,10 @@ public class TcpSyslogMessageSender extends AbstractSyslogMessageSender {
                 ", sendErrorCounter=" + sendErrorCounter +
                 ", trySendErrorCounter=" + trySendErrorCounter +
                 '}';
+    }
+
+    @Override
+    public void close() throws IOException {
+        this.socket.close();
     }
 }

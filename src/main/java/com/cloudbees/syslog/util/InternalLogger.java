@@ -17,6 +17,7 @@ package com.cloudbees.syslog.util;
 
 import com.cloudbees.syslog.integration.jul.util.LevelHelper;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -41,12 +42,12 @@ public class InternalLogger {
         }
     }
 
-    public static InternalLogger getLogger(@Nullable String name) {
+    public static InternalLogger getLogger(@Nonnull String name) {
         return new InternalLogger(name);
     }
 
-    public static InternalLogger getLogger(@Nullable Class clazz) {
-        return getLogger(clazz == null ? null : clazz.getName());
+    public static InternalLogger getLogger(@Nonnull Class clazz) {
+        return getLogger(clazz.getName());
     }
 
     public static Level getLevel() {

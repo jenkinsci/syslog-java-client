@@ -133,6 +133,23 @@ public abstract class AbstractSyslogMessageSender implements SyslogMessageSender
     public void setDefaultSeverity(Severity defaultSeverity) {
         this.defaultSeverity = defaultSeverity;
     }
+    
+    /**
+     * Set the hostname or IP of the syslog server to which messages will be
+     * sent.
+     * 
+     * @param syslogServerHostname 
+     *     The hostname or IP address of the syslog server.
+     */
+    public abstract void setSyslogServerHostname(final String syslogServerHostname);
+    
+    /**
+     * Set the port number of the syslog server to which messages will be sent.
+     * 
+     * @param syslogServerPort
+     *     The port to which syslog messages will be sent.
+     */
+    public abstract void setSyslogServerPort(int syslogServerPort);
 
     @Override
     public String toString() {

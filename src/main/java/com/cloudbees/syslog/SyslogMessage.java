@@ -15,21 +15,25 @@
  */
 package com.cloudbees.syslog;
 
-import com.cloudbees.syslog.util.CachingReference;
-import com.cloudbees.syslog.util.ConcurrentDateFormat;
-
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+
 import java.io.CharArrayWriter;
 import java.io.IOException;
 import java.io.StringWriter;
 import java.io.Writer;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
+import java.nio.charset.StandardCharsets;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.Locale;
+import java.util.Set;
 import java.util.TimeZone;
 import java.util.concurrent.TimeUnit;
+
+import com.cloudbees.syslog.util.CachingReference;
+import com.cloudbees.syslog.util.ConcurrentDateFormat;
 
 /**
  * Syslog message as defined in <a href="https://tools.ietf.org/html/rfc5424">RFC 5424 - The Syslog Protocol</a>.
@@ -86,11 +90,12 @@ public class SyslogMessage {
 
     private Facility facility;
     private Severity severity;
-    private Date timestamp;
+    private Long timestamp;
     private String hostname;
     private String appName;
     private String procId;
     private String msgId;
+    private Set<SDElement> sdElements;
     /**
      * Use a {@link java.io.CharArrayWriter} instead of a {@link String}  or a {@code char[]} because middlewares like
      * Apache Tomcat use {@code CharArrayWriter} and it's convenient for pooling objects.
@@ -124,20 +129,20 @@ public class SyslogMessage {
     }
 
     public Date getTimestamp() {
-        return timestamp;
+        return timestamp == null ? null : new Date(timestamp);
     }
 
     public void setTimestamp(Date timestamp) {
-        this.timestamp = timestamp;
+        this.timestamp = (timestamp == null ? null : timestamp.getTime());
     }
 
     public SyslogMessage withTimestamp(long timestamp) {
-        this.timestamp = new Date(timestamp);
+        this.timestamp = timestamp;
         return this;
     }
 
     public SyslogMessage withTimestamp(Date timestamp) {
-        this.timestamp = timestamp;
+        this.timestamp = (timestamp == null ? null : timestamp.getTime());
         return this;
     }
 
@@ -213,6 +218,26 @@ public class SyslogMessage {
             }
         });
     }
+    
+    public Set<SDElement> getSDElements() {
+        Set<SDElement> ssde = sdElements;
+        if (ssde == null) {
+            ssde = new HashSet<SDElement>(0);
+        }
+        return ssde;
+    }
+    
+    public void setSDElements(Set<SDElement> ssde) {
+        this.sdElements = ssde;
+    }
+    
+    public SyslogMessage withSDElement(SDElement sde) {
+        if (sdElements == null) {
+            sdElements = new HashSet<SDElement>();
+        }
+        sdElements.add(sde);
+        return this;
+    }
 
     /**
      * Generates a Syslog message complying to the <a href="http://tools.ietf.org/html/rfc5424">RFC-5424</a> format
@@ -226,6 +251,8 @@ public class SyslogMessage {
                 return toRfc3164SyslogMessage();
             case RFC_5424:
                 return toRfc5424SyslogMessage();
+            case RFC_5425:
+                return toRfc5425SyslogMessage();
             default:
                 throw new IllegalStateException("Unsupported message format '" + messageFormat + "'");
         }
@@ -246,9 +273,38 @@ public class SyslogMessage {
             case RFC_5424:
                 toRfc5424SyslogMessage(out);
                 break;
+            case RFC_5425:
+                toRfc5425SyslogMessage(out);
+                break;
             default:
                 throw new IllegalStateException("Unsupported message format '" + messageFormat + "'");
         }
+    }
+
+    /**
+     * Generates an <a href="http://tools.ietf.org/html/rfc5424">RFC-5425</a> message.
+     */
+    public String toRfc5425SyslogMessage() {
+
+        StringWriter sw = new StringWriter(msg == null ? 32 : msg.size() + 32);
+        try {
+            toRfc5425SyslogMessage(sw);
+        } catch (IOException e) {
+            throw new IllegalStateException(e);
+        }
+        return sw.toString();
+    }
+
+    /**
+     * Generates an <a href="http://tools.ietf.org/html/rfc5425">RFC-5425</a> message.
+     */
+    public void toRfc5425SyslogMessage(Writer out) throws IOException {
+
+        String rfc5424Message = toRfc5424SyslogMessage();
+        int length = rfc5424Message.getBytes(StandardCharsets.UTF_8).length;
+        out.write(String.valueOf(length));
+        out.write(SP);
+        out.write(rfc5424Message);
     }
 
     /**
@@ -267,17 +323,20 @@ public class SyslogMessage {
 
     /**
      * Generates an <a href="http://tools.ietf.org/html/rfc5424">RFC-5424</a> message.
+     *
+     * The priority is calculated by facility * 8 + severity, see
+     * <a href="https://tools.ietf.org/html/rfc5424#section-6.2.1">RFC-5424, Section 6.2.1</a>
      */
     public void toRfc5424SyslogMessage(Writer out) throws IOException {
 
-        int pri = facility.numericalCode() + severity.numericalCode();
+        int pri = facility.numericalCode() * 8 + severity.numericalCode();
 
         out.write('<');
         out.write(String.valueOf(pri));
         out.write('>');
         out.write('1'); // version
         out.write(SP);
-        out.write(rfc3339DateFormat.format(timestamp == null ? new Date() : timestamp)); // message time
+        out.write(rfc3339DateFormat.format(timestamp == null ? new Date() : new Date(timestamp))); // message time
         out.write(SP);
         out.write(hostname == null ? localhostNameReference.get() : hostname); // emitting server hostname
         out.write(SP);
@@ -287,7 +346,7 @@ public class SyslogMessage {
         out.write(SP);
         writeNillableValue(msgId, out);// Message ID
         out.write(SP);
-        out.write(NILVALUE); // structured data
+        writeStructuredDataOrNillableValue(sdElements, out);
         if (msg != null) {
             out.write(SP);
             msg.writeTo(out);
@@ -315,12 +374,12 @@ public class SyslogMessage {
      */
     public void toRfc3164SyslogMessage(Writer out) throws IOException {
 
-        int pri = facility.numericalCode() + severity.numericalCode();
+        int pri = facility.numericalCode() * 8 + severity.numericalCode();
 
         out.write('<');
         out.write(Integer.toString(pri));
         out.write('>');
-        out.write(rfc3164DateFormat.format(timestamp == null ? new Date() : timestamp)); // message time
+        out.write(rfc3164DateFormat.format(timestamp == null ? new Date() : new Date(timestamp))); // message time
         out.write(SP);
         out.write((hostname == null) ? localhostNameReference.get() : hostname); // emitting server hostname
         out.write(SP);
@@ -338,5 +397,54 @@ public class SyslogMessage {
         } else {
             out.write(value);
         }
+    }
+    
+    protected void writeStructuredDataOrNillableValue(@Nullable Set<SDElement> ssde, @Nonnull Writer out) throws IOException {
+        if (ssde == null || ssde.isEmpty()) {
+            out.write(NILVALUE);
+        } else {
+            for (SDElement sde : ssde) {
+                writeSDElement(sde, out);
+            }
+        }
+    }
+    
+    protected void writeSDElement(@Nonnull SDElement sde, @Nonnull Writer out) throws IOException {
+        out.write("[");
+        out.write(sde.getSdID());
+        for (SDParam sdp : sde.getSdParams()) {
+            writeSDParam(sdp, out);
+        }
+        out.write("]");
+    }
+    
+    protected void writeSDParam(@Nonnull SDParam sdp, @Nonnull Writer out) throws IOException {
+        out.write(SP);
+        out.write(sdp.getParamName());
+        out.write('=');
+        out.write('"');
+        out.write(getEscapedParamValue(sdp.getParamValue()));
+        out.write('"');
+    }
+    
+    protected String getEscapedParamValue(String paramValue) {
+        StringBuilder sb = new StringBuilder(paramValue.length());
+        
+        for (int i = 0; i < paramValue.length(); i++) {
+            char c = paramValue.charAt(i);
+            switch (c) {
+                // Falls through
+                case '"':
+                case '\\':
+                case ']':
+                    sb.append('\\');
+                    break;
+                default:
+                    break;
+            }
+            sb.append(c);
+        }
+        
+        return sb.toString();
     }
 }

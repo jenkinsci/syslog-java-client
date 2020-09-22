@@ -119,12 +119,10 @@ public class SyslogHandler extends AbstractHandler {
 
     @Override
     public void close() throws SecurityException {
-        if (syslogMessageSender instanceof Closeable) {
-            try {
-                ((Closeable) syslogMessageSender).close();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+        try {
+            syslogMessageSender.close();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 

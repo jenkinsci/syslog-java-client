@@ -92,4 +92,12 @@ public class TcpSyslogMessageSenderTest {
     }
 
 
+    /**
+     * https://github.com/CloudBees-community/syslog-java-client/issues/19
+     */
+    @Test
+    public void test_bug19_NullPointerException_In_ToString(){
+        TcpSyslogMessageSender tcpSyslogMessageSender = new TcpSyslogMessageSender();
+        tcpSyslogMessageSender.toString();
+    }
 }
