@@ -151,6 +151,7 @@ public class UdpSyslogMessageSender extends AbstractSyslogMessageSender implemen
 
     @Override
     public void close() throws IOException {
-        this.datagramSocket.close();
+    	if(this.datagramSocket != null)
+    		this.datagramSocket.close();
     }
 }
