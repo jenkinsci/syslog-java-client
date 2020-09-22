@@ -149,8 +149,8 @@ public class TcpSyslogMessageSender extends AbstractSyslogMessageSender implemen
     /**
      * @return true if proxy connected and either proxy connection or syslog server connection have changed
      */
-    private boolean proxyConnectedAddressChange(final ProxyConfig currentProxyConfig) {
-    	return proxyConnectedSyslogServer != null && (!Objects.equals(socket.getInetAddress(), proxyConnectedSyslogServer) 
+    private boolean proxyConnectedAddressChange(final InetAddress syslogServer, final ProxyConfig currentProxyConfig) {
+    	return proxyConnectedSyslogServer != null && (!Objects.equals(syslogServer, proxyConnectedSyslogServer) 
     			|| !Objects.equals(socket.getInetAddress(), currentProxyConfig.getHostnameReference().get()));
     }
     
@@ -160,7 +160,7 @@ public class TcpSyslogMessageSender extends AbstractSyslogMessageSender implemen
         if (socket != null && (
         		notProxyConnectedAddressChange(inetAddress)
         		|| proxyUseHasChanged(currentProxyConfig)
-        		|| proxyConnectedAddressChange(currentProxyConfig))) {
+        		|| proxyConnectedAddressChange(inetAddress, currentProxyConfig))) {
             logger.info("InetAddress of the Syslog Server have changed, create a new connection. " +
                     "Before=" + socket.getInetAddress() + ", new=" + inetAddress);
             IoUtils.closeQuietly(socket, writer);
