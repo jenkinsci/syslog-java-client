@@ -74,6 +74,12 @@ public class TcpSyslogMessageSender extends AbstractSyslogMessageSender implemen
     private SSLContext sslContext;
     private ProxyConfig proxyConfig;
     /**
+     * If the last connection was via a proxy server this will contain the 
+     * InetAddress of the syslog server that was connected to via the proxy.
+     */
+    private InetAddress proxyConnectedSyslogServer;
+    
+    /**
      * Number of retries to send a message before throwing an exception.
      */
     private int maxRetryCount = SETTING_MAX_RETRY;
@@ -127,7 +133,17 @@ public class TcpSyslogMessageSender extends AbstractSyslogMessageSender implemen
 
     private synchronized void ensureSyslogServerConnection() throws IOException {
         InetAddress inetAddress = syslogServerHostnameReference.get();
-        if (socket != null && !Objects.equals(socket.getInetAddress(), inetAddress)) {
+        final ProxyConfig currentProxyConfig = this.proxyConfig;
+        if (socket != null && 
+        		//If not proxy connected check that socket is connected to current configured syslog 
+        		((proxyConnectedSyslogServer == null && !Objects.equals(socket.getInetAddress(), inetAddress))
+        		//If proxy configured but last connection was not via proxy
+        		|| (currentProxyConfig != null && proxyConnectedSyslogServer == null)
+        		//If proxy not configured but last connection was via proxy
+        		|| (currentProxyConfig == null && proxyConnectedSyslogServer != null)
+        		//If proxy connected check that socket is connected to current configured proxy and last connected syslog matches current configured syslog 
+        		|| (proxyConnectedSyslogServer != null && !Objects.equals(socket.getInetAddress(), proxyConnectedSyslogServer) &&
+        		!Objects.equals(socket.getInetAddress(), currentProxyConfig.getHostnameReference().get())))) {
             logger.info("InetAddress of the Syslog Server have changed, create a new connection. " +
                     "Before=" + socket.getInetAddress() + ", new=" + inetAddress);
             IoUtils.closeQuietly(socket, writer);
@@ -160,7 +176,6 @@ public class TcpSyslogMessageSender extends AbstractSyslogMessageSender implemen
                 }
             	
             	final InetSocketAddress syslogServer = new InetSocketAddress(inetAddress, syslogServerPort);
-            	final ProxyConfig currentProxyConfig = this.proxyConfig;
             	
             	if(currentProxyConfig == null) {
             		socket = socketFactory.createSocket();
@@ -168,6 +183,7 @@ public class TcpSyslogMessageSender extends AbstractSyslogMessageSender implemen
             		socket.connect(
                     		syslogServer,
                             socketConnectTimeoutInMillis);
+            		proxyConnectedSyslogServer = null;
             	}else {
             		final InetSocketAddress proxyAddr = new InetSocketAddress(currentProxyConfig.getHostnameReference().get(), currentProxyConfig.getPort());
             		final Socket underlying = new Socket(new Proxy(Proxy.Type.HTTP, proxyAddr));
@@ -175,9 +191,11 @@ public class TcpSyslogMessageSender extends AbstractSyslogMessageSender implemen
             		underlying.connect(syslogServer);
                     socket = ((SSLSocketFactory)socketFactory).createSocket(
                           underlying,
-                          currentProxyConfig.getHostname(),
-                          currentProxyConfig.getPort(),
+                          syslogServer.getHostName(),
+                          syslogServer.getPort(),
                           true);
+                    socket.setKeepAlive(true);
+                    proxyConnectedSyslogServer = inetAddress;
             	}
                 
 
