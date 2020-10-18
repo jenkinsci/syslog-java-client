@@ -26,6 +26,7 @@ import javax.annotation.Nullable;
 import javax.annotation.concurrent.ThreadSafe;
 import javax.net.SocketFactory;
 import javax.net.ssl.SSLContext;
+import javax.net.ssl.SSLParameters;
 import javax.net.ssl.SSLSession;
 import javax.net.ssl.SSLSocket;
 import javax.net.ssl.SSLSocketFactory;
@@ -212,6 +213,10 @@ public class TcpSyslogMessageSender extends AbstractSyslogMessageSender implemen
                           syslogServer.getPort(),
                           true);
                     socket.setKeepAlive(true);
+                    final SSLSocket sslSocket = (SSLSocket) socket;
+                    final SSLParameters sslParams = new SSLParameters();
+                    sslParams.setEndpointIdentificationAlgorithm("HTTPS");
+                    sslSocket.setSSLParameters(sslParams);
                     proxyConnectedSyslogServer = inetAddress;
             	}
                 
