@@ -19,11 +19,14 @@ import com.cloudbees.syslog.SyslogMessage;
 import com.cloudbees.syslog.util.CachingReference;
 import com.cloudbees.syslog.util.IoUtils;
 
+import com.cloudbees.syslog.sender.proxy.ProxyConfig;
+
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.annotation.concurrent.ThreadSafe;
 import javax.net.SocketFactory;
 import javax.net.ssl.SSLContext;
+import javax.net.ssl.SSLParameters;
 import javax.net.ssl.SSLSession;
 import javax.net.ssl.SSLSocket;
 import javax.net.ssl.SSLSocketFactory;
@@ -70,6 +73,13 @@ public class TcpSyslogMessageSender extends AbstractSyslogMessageSender implemen
     private int socketConnectTimeoutInMillis = SETTING_SOCKET_CONNECT_TIMEOUT_IN_MILLIS_DEFAULT_VALUE;
     private boolean ssl;
     private SSLContext sslContext;
+    private ProxyConfig proxyConfig;
+    /**
+     * If the last connection was via a proxy server this will contain the 
+     * InetAddress of the syslog server that was connected to via the proxy.
+     */
+    private InetAddress proxyConnectedSyslogServer;
+    
     /**
      * Number of retries to send a message before throwing an exception.
      */
@@ -122,9 +132,36 @@ public class TcpSyslogMessageSender extends AbstractSyslogMessageSender implemen
         }
     }
 
+    /**
+     * @return true if not proxy connected and the socket is connected to current configured syslog 
+     */
+    private boolean notProxyConnectedAddressChange(final InetAddress inetAddress) {
+    	return proxyConnectedSyslogServer == null && !Objects.equals(socket.getInetAddress(), inetAddress);
+    }
+    
+    /**
+     * @return true if currentProxyConfig status does not match proxyConnectedSyslogServer
+     */
+    private boolean proxyUseHasChanged(final ProxyConfig currentProxyConfig) {
+    	return (currentProxyConfig != null && proxyConnectedSyslogServer == null)
+		|| (currentProxyConfig == null && proxyConnectedSyslogServer != null);
+    }
+    
+    /**
+     * @return true if proxy connected and either proxy connection or syslog server connection have changed
+     */
+    private boolean proxyConnectedAddressChange(final InetAddress syslogServer, final ProxyConfig currentProxyConfig) {
+    	return proxyConnectedSyslogServer != null && (!Objects.equals(syslogServer, proxyConnectedSyslogServer) 
+    			|| !Objects.equals(socket.getInetAddress(), currentProxyConfig.getHostnameReference().get()));
+    }
+    
     private synchronized void ensureSyslogServerConnection() throws IOException {
         InetAddress inetAddress = syslogServerHostnameReference.get();
-        if (socket != null && !Objects.equals(socket.getInetAddress(), inetAddress)) {
+        final ProxyConfig currentProxyConfig = this.proxyConfig;
+        if (socket != null && (
+        		notProxyConnectedAddressChange(inetAddress)
+        		|| proxyUseHasChanged(currentProxyConfig)
+        		|| proxyConnectedAddressChange(inetAddress, currentProxyConfig))) {
             logger.info("InetAddress of the Syslog Server have changed, create a new connection. " +
                     "Before=" + socket.getInetAddress() + ", new=" + inetAddress);
             IoUtils.closeQuietly(socket, writer);
@@ -145,19 +182,44 @@ public class TcpSyslogMessageSender extends AbstractSyslogMessageSender implemen
         if (!socketIsValid) {
             writer = null;
             try {
-                if (ssl) {
+            	final SocketFactory socketFactory;
+            	if (ssl) {
                     if (sslContext == null) {
-                        socket = SSLSocketFactory.getDefault().createSocket();
+                    	socketFactory = SSLSocketFactory.getDefault();
                     } else {
-                        socket = sslContext.getSocketFactory().createSocket();
+                    	socketFactory = sslContext.getSocketFactory();
                     }
                 } else {
-                    socket = SocketFactory.getDefault().createSocket();
+                	socketFactory = SocketFactory.getDefault();
                 }
-                socket.setKeepAlive(true);
-                socket.connect(
-                        new InetSocketAddress(inetAddress, syslogServerPort),
-                        socketConnectTimeoutInMillis);
+            	
+            	final InetSocketAddress syslogServer = new InetSocketAddress(inetAddress, syslogServerPort);
+            	
+            	if(currentProxyConfig == null) {
+            		socket = socketFactory.createSocket();
+            		socket.setKeepAlive(true);
+            		socket.connect(
+                    		syslogServer,
+                            socketConnectTimeoutInMillis);
+            		proxyConnectedSyslogServer = null;
+            	}else {
+            		final InetSocketAddress proxyAddr = new InetSocketAddress(currentProxyConfig.getHostnameReference().get(), currentProxyConfig.getPort());
+            		final Socket underlying = new Socket(new Proxy(Proxy.Type.HTTP, proxyAddr));
+            		underlying.setKeepAlive(true);
+            		underlying.connect(syslogServer);
+                    socket = ((SSLSocketFactory)socketFactory).createSocket(
+                          underlying,
+                          syslogServer.getHostName(),
+                          syslogServer.getPort(),
+                          true);
+                    socket.setKeepAlive(true);
+                    final SSLSocket sslSocket = (SSLSocket) socket;
+                    final SSLParameters sslParams = new SSLParameters();
+                    sslParams.setEndpointIdentificationAlgorithm("HTTPS");
+                    sslSocket.setSSLParameters(sslParams);
+                    proxyConnectedSyslogServer = inetAddress;
+            	}
+                
 
                 if (socket instanceof SSLSocket && logger.isLoggable(Level.FINER)) {
                     try {
@@ -241,7 +303,15 @@ public class TcpSyslogMessageSender extends AbstractSyslogMessageSender implemen
         return this.sslContext; 
     }
 
-    public int getSocketConnectTimeoutInMillis() {
+    public ProxyConfig getProxyConfig() {
+		return proxyConfig;
+	}
+
+	public void setProxyConfig(ProxyConfig proxyConfig) {
+		this.proxyConfig = proxyConfig;
+	}
+
+	public int getSocketConnectTimeoutInMillis() {
         return socketConnectTimeoutInMillis;
     }
 
@@ -287,6 +357,7 @@ public class TcpSyslogMessageSender extends AbstractSyslogMessageSender implemen
 
     @Override
     public void close() throws IOException {
-        this.socket.close();
+        if(this.socket != null)
+        	this.socket.close();
     }
 }
