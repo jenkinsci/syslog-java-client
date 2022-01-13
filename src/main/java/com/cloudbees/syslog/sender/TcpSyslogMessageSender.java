@@ -47,8 +47,14 @@ import java.util.logging.Level;
  */
 @ThreadSafe
 public class TcpSyslogMessageSender extends AbstractSyslogMessageSender implements Closeable  {
+    public enum SocketFlush {
+        onSend, // default,
+        onClose // higher throughput, but at a risk of data-loss if the syslog server address dynamically changes
+    };
+
     public final static int SETTING_SOCKET_CONNECT_TIMEOUT_IN_MILLIS_DEFAULT_VALUE = 500;
     public final static int SETTING_MAX_RETRY = 2;
+    public final static SocketFlush DEFAULT_SOCKET_FLUSH = SocketFlush.onSend;
 
     /**
      * {@link java.net.InetAddress InetAddress} of the remote Syslog Server.
@@ -74,6 +80,9 @@ public class TcpSyslogMessageSender extends AbstractSyslogMessageSender implemen
      * Number of retries to send a message before throwing an exception.
      */
     private int maxRetryCount = SETTING_MAX_RETRY;
+
+    private SocketFlush socketFlush = DEFAULT_SOCKET_FLUSH;
+
     /**
      * Number of exceptions trying to send message.
      */
@@ -97,7 +106,9 @@ public class TcpSyslogMessageSender extends AbstractSyslogMessageSender implemen
                     ensureSyslogServerConnection();
                     message.toSyslogMessage(messageFormat, writer);
                     writer.write(postfix);
-                    writer.flush();
+                    if (socketFlush == SocketFlush.onSend) {
+                        writer.flush();
+                    }
                     return;
                 } catch (IOException e) {
                     lastException = e;
@@ -265,6 +276,14 @@ public class TcpSyslogMessageSender extends AbstractSyslogMessageSender implemen
         this.postfix = postfix;
     }
 
+    public SocketFlush getSocketFlush() {
+        return socketFlush;
+    }
+
+    public void setSocketFlush(SocketFlush socketFlush) {
+        this.socketFlush = socketFlush;
+    }
+
     @Override
     public String toString() {
         return getClass().getName() + "{" +
@@ -282,11 +301,17 @@ public class TcpSyslogMessageSender extends AbstractSyslogMessageSender implemen
                 ", sendDurationInNanosCounter=" + sendDurationInNanosCounter +
                 ", sendErrorCounter=" + sendErrorCounter +
                 ", trySendErrorCounter=" + trySendErrorCounter +
+                ", socketFlush=" + socketFlush +
                 '}';
     }
 
     @Override
     public void close() throws IOException {
-        this.socket.close();
+        if ((socketFlush == SocketFlush.onClose) && (writer != null)) {
+            // close will flush first, so if an exception ocurrs, data will still be passed to socket
+            writer.close();
+        }
+        socket.close();
+
     }
 }
