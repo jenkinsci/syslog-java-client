@@ -25,9 +25,13 @@ package com.cloudbees.syslog.integration.jul.util;
 
 import com.cloudbees.syslog.Severity;
 
-import edu.umd.cs.findbugs.annotations.NonNull;
 import edu.umd.cs.findbugs.annotations.Nullable;
-import java.util.*;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.logging.Level;
 
 /**
@@ -43,8 +47,8 @@ public class LevelHelper {
     private final static Map<Level, Severity> julLevelToSyslogSeverity;
 
     static {
-        Map<String, Level> levelsByNameMap = new HashMap<String, Level>();
-        Map<Integer, Level> levelsByValueMap = new HashMap<Integer, Level>();
+        Map<String, Level> levelsByNameMap = new HashMap<>();
+        Map<Integer, Level> levelsByValueMap = new HashMap<>();
         for (Level level : levels) {
             levelsByNameMap.put(level.getName(), level);
             levelsByValueMap.put(level.intValue(), level);
@@ -88,11 +92,6 @@ public class LevelHelper {
      * Compare on {@link java.util.logging.Level#intValue()}
      */
     public static Comparator<Level> comparator() {
-        return new Comparator<Level>() {
-            @Override
-            public int compare(Level l1, Level l2) {
-                return Integer.compare(l1.intValue(), l2.intValue());
-            }
-        };
+        return Comparator.comparingInt(Level::intValue);
     }
 }

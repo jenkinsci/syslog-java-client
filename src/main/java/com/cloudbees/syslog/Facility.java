@@ -128,8 +128,8 @@ public enum Facility implements Comparable<Facility> {
     LOCAL7(23, "LOCAL7");
 
     // mapping
-    private final static Map<String, Facility> facilityFromLabel = new HashMap<String, Facility>();
-    private final static Map<Integer, Facility> facilityFromNumericalCode = new HashMap<Integer, Facility>();
+    private final static Map<String, Facility> facilityFromLabel = new HashMap<>();
+    private final static Map<Integer, Facility> facilityFromNumericalCode = new HashMap<>();
 
     static {
         for (Facility facility : Facility.values()) {
@@ -148,7 +148,7 @@ public enum Facility implements Comparable<Facility> {
     @NonNull
     private final String label;
 
-    private Facility(int numericalCode, @NonNull String label) {
+    Facility(int numericalCode, @NonNull String label) {
         this.numericalCode = numericalCode;
         this.label = label;
     }
@@ -202,11 +202,6 @@ public enum Facility implements Comparable<Facility> {
      * Compare on {@link Facility#numericalCode()}
      */
     public static Comparator<Facility> comparator() {
-        return new Comparator<Facility>() {
-            @Override
-            public int compare(Facility f1, Facility f2) {
-                return Integer.compare(f1.numericalCode, f2.numericalCode);
-            }
-        };
+        return Comparator.comparingInt(f -> f.numericalCode);
     }
 }

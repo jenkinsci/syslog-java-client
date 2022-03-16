@@ -61,8 +61,8 @@ public enum Severity {
     DEBUG(7, "DEBUG");
 
     // mapping
-    private final static Map<String, Severity> severityFromLabel = new HashMap<String, Severity>();
-    private final static Map<Integer, Severity> severityFromNumericalCode = new HashMap<Integer, Severity>();
+    private final static Map<String, Severity> severityFromLabel = new HashMap<>();
+    private final static Map<Integer, Severity> severityFromNumericalCode = new HashMap<>();
 
     static {
         for (Severity severity : Severity.values()) {
@@ -75,7 +75,7 @@ public enum Severity {
     @NonNull
     private final String label;
 
-    private Severity(int numericalCode, @NonNull String label) {
+    Severity(int numericalCode, @NonNull String label) {
         this.numericalCode = numericalCode;
         this.label = label;
     }
@@ -129,12 +129,7 @@ public enum Severity {
      * Compare on {@link Severity#numericalCode()}
      */
     public static Comparator<Severity> comparator() {
-        return new Comparator<Severity>() {
-            @Override
-            public int compare(Severity s1, Severity s2) {
-                return Integer.compare(s1.numericalCode, s2.numericalCode);
-            }
-        };
+        return Comparator.comparingInt(s -> s.numericalCode);
     }
 }
 

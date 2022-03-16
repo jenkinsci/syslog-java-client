@@ -74,7 +74,7 @@ public class SyslogMessage {
                 TimeZone.getTimeZone("GMT"),
                 concurrency);
 
-        /**
+        /*
          * According to <a href="http://tools.ietf.org/html/rfc3164#section-4.1.2">RFC31614- 4.1.2 HEADER Part of a syslog Packet</a>,
          * we should use local time and not GMT.
          * <quote>
@@ -133,7 +133,7 @@ public class SyslogMessage {
     }
 
     public void setTimestamp(Date timestamp) {
-        this.timestamp = (timestamp == null ? null : timestamp.getTime());
+        this.timestamp = timestamp == null ? null : timestamp.getTime();
     }
 
     public SyslogMessage withTimestamp(long timestamp) {
@@ -142,7 +142,7 @@ public class SyslogMessage {
     }
 
     public SyslogMessage withTimestamp(Date timestamp) {
-        this.timestamp = (timestamp == null ? null : timestamp.getTime());
+        this.timestamp = timestamp == null ? null : timestamp.getTime();
         return this;
     }
 
@@ -222,7 +222,7 @@ public class SyslogMessage {
     public Set<SDElement> getSDElements() {
         Set<SDElement> ssde = sdElements;
         if (ssde == null) {
-            ssde = new HashSet<SDElement>(0);
+            ssde = new HashSet<>(0);
         }
         return ssde;
     }
@@ -233,7 +233,7 @@ public class SyslogMessage {
     
     public SyslogMessage withSDElement(SDElement sde) {
         if (sdElements == null) {
-            sdElements = new HashSet<SDElement>();
+            sdElements = new HashSet<>();
         }
         sdElements.add(sde);
         return this;
@@ -381,7 +381,7 @@ public class SyslogMessage {
         out.write('>');
         out.write(rfc3164DateFormat.format(timestamp == null ? new Date() : new Date(timestamp))); // message time
         out.write(SP);
-        out.write((hostname == null) ? localhostNameReference.get() : hostname); // emitting server hostname
+        out.write(hostname == null ? localhostNameReference.get() : hostname); // emitting server hostname
         out.write(SP);
         writeNillableValue(appName, out); // appname
 

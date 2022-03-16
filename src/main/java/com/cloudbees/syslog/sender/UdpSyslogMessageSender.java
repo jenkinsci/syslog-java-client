@@ -29,6 +29,7 @@ import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
+import java.nio.charset.StandardCharsets;
 import java.util.logging.Level;
 
 /**
@@ -80,21 +81,18 @@ public class UdpSyslogMessageSender extends AbstractSyslogMessageSender implemen
 
         try {
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
-            Writer out = new OutputStreamWriter(baos, UTF_8);
+            Writer out = new OutputStreamWriter(baos, StandardCharsets.UTF_8);
             message.toSyslogMessage(messageFormat, out);
             out.flush();
 
             if (logger.isLoggable(Level.FINEST)) {
-                logger.finest("Send syslog message " + new String(baos.toByteArray(), UTF_8));
+                logger.finest("Send syslog message " + new String(baos.toByteArray(), StandardCharsets.UTF_8));
             }
             byte[] bytes = baos.toByteArray();
 
             DatagramPacket packet = new DatagramPacket(bytes, bytes.length, syslogServerHostnameReference.get(), syslogServerPort);
             datagramSocket.send(packet);
-        } catch (IOException e) {
-            sendErrorCounter.incrementAndGet();
-            throw e;
-        } catch (RuntimeException e) {
+        } catch (IOException | RuntimeException e) {
             sendErrorCounter.incrementAndGet();
             throw e;
         } finally {

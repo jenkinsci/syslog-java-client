@@ -33,7 +33,12 @@ import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
 import java.math.BigInteger;
-import java.net.*;
+import java.net.ConnectException;
+import java.net.InetAddress;
+import java.net.InetSocketAddress;
+import java.net.Socket;
+import java.net.UnknownHostException;
+import java.nio.charset.StandardCharsets;
 import java.security.cert.Certificate;
 import java.security.cert.X509Certificate;
 import java.util.Objects;
@@ -99,11 +104,7 @@ public class TcpSyslogMessageSender extends AbstractSyslogMessageSender implemen
                     writer.write(postfix);
                     writer.flush();
                     return;
-                } catch (IOException e) {
-                    lastException = e;
-                    IoUtils.closeQuietly(socket, writer);
-                    trySendErrorCounter.incrementAndGet();
-                } catch (RuntimeException e) {
+                } catch (IOException | RuntimeException e) {
                     lastException = e;
                     IoUtils.closeQuietly(socket, writer);
                     trySendErrorCounter.incrementAndGet();
@@ -189,7 +190,7 @@ public class TcpSyslogMessageSender extends AbstractSyslogMessageSender implemen
             }
         }
         if (writer == null) {
-            writer = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream(), UTF_8));
+            writer = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream(), StandardCharsets.UTF_8));
         }
     }
 

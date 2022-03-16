@@ -27,7 +27,13 @@ import com.cloudbees.syslog.integration.jul.util.LogManagerHelper;
 
 import edu.umd.cs.findbugs.annotations.NonNull;
 import edu.umd.cs.findbugs.annotations.Nullable;
-import java.util.logging.*;
+import java.util.logging.Filter;
+import java.util.logging.Formatter;
+import java.util.logging.Handler;
+import java.util.logging.Level;
+import java.util.logging.LogManager;
+import java.util.logging.LogRecord;
+import java.util.logging.SimpleFormatter;
 
 /**
  * @author <a href="mailto:cleclerc@cloudbees.com">Cyrille Le Clerc</a>
@@ -69,6 +75,7 @@ public abstract class AbstractHandler extends Handler {
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean isLoggable(LogRecord record) {
         if (record == null) {
             return false;
@@ -88,6 +95,7 @@ public abstract class AbstractHandler extends Handler {
      * {@inheritDoc}
      */
     @Nullable
+    @Override
     public Filter getFilter() {
         return filter;
     }

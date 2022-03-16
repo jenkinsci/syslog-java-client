@@ -1,12 +1,16 @@
 package com.cloudbees.syslog.sender;
 
-import com.cloudbees.syslog.*;
+import com.cloudbees.syslog.Facility;
+import com.cloudbees.syslog.MessageFormat;
+import com.cloudbees.syslog.Severity;
+import com.cloudbees.syslog.SyslogMessage;
 import com.cloudbees.syslog.util.InternalLogger;
 
 import edu.umd.cs.findbugs.annotations.NonNull;
 import java.io.CharArrayWriter;
 import java.io.IOException;
 import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
@@ -15,7 +19,11 @@ import java.util.concurrent.atomic.AtomicLong;
  * @author <a href="mailto:cleclerc@cloudbees.com">Cyrille Le Clerc</a>
  */
 public abstract class AbstractSyslogMessageSender implements SyslogMessageSender {
-    protected final static Charset UTF_8 = Charset.forName("UTF-8");
+    /**
+     * @deprecated use {@link StandardCharsets#UTF_8}
+     */
+    @Deprecated
+    protected final static Charset UTF_8 = StandardCharsets.UTF_8;
     protected final InternalLogger logger = InternalLogger.getLogger(getClass());
     // default values
     protected String defaultAppName;

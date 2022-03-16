@@ -69,7 +69,7 @@ public class LogManagerHelper {
         String val = manager.getProperty(name);
         try {
             if (val != null) {
-                Class clz = ClassLoader.getSystemClassLoader().loadClass(val);
+                Class<?> clz = ClassLoader.getSystemClassLoader().loadClass(val);
                 return (Filter) clz.newInstance();
             }
         } catch (Exception ex) {
@@ -96,7 +96,7 @@ public class LogManagerHelper {
         String val = manager.getProperty(name);
         try {
             if (val != null) {
-                Class clz = ClassLoader.getSystemClassLoader().loadClass(val);
+                Class<?> clz = ClassLoader.getSystemClassLoader().loadClass(val);
                 return (Formatter) clz.newInstance();
             }
         } catch (Exception ex) {
