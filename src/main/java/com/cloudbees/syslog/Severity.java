@@ -75,7 +75,7 @@ public enum Severity {
     @NonNull
     private final String label;
 
-    private Severity(int numericalCode, @NonNull String label) {
+    Severity(int numericalCode, @NonNull String label) {
         this.numericalCode = numericalCode;
         this.label = label;
     }
