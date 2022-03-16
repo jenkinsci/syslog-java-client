@@ -3,7 +3,7 @@ package com.cloudbees.syslog.sender;
 import com.cloudbees.syslog.*;
 import com.cloudbees.syslog.util.InternalLogger;
 
-import javax.annotation.Nonnull;
+import edu.umd.cs.findbugs.annotations.NonNull;
 import java.io.CharArrayWriter;
 import java.io.IOException;
 import java.nio.charset.Charset;
@@ -66,7 +66,7 @@ public abstract class AbstractSyslogMessageSender implements SyslogMessageSender
      * @param message the message to send
      * @throws IOException
      */
-    public abstract void sendMessage(@Nonnull SyslogMessage message) throws IOException;
+    public abstract void sendMessage(@NonNull SyslogMessage message) throws IOException;
 
     public String getDefaultAppName() {
         return defaultAppName;

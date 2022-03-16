@@ -31,8 +31,8 @@ import com.cloudbees.syslog.integration.jul.util.LogManagerHelper;
 import com.cloudbees.syslog.sender.SyslogMessageSender;
 import com.cloudbees.syslog.sender.UdpSyslogMessageSender;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
+import edu.umd.cs.findbugs.annotations.NonNull;
+import edu.umd.cs.findbugs.annotations.Nullable;
 import java.io.Closeable;
 import java.io.IOException;
 import java.util.logging.*;
@@ -71,16 +71,16 @@ public class SyslogHandler extends AbstractHandler {
         this.syslogMessageSender = udpSender;
     }
 
-    public SyslogHandler(@Nonnull SyslogMessageSender syslogMessageSender) {
+    public SyslogHandler(@NonNull SyslogMessageSender syslogMessageSender) {
         this(syslogMessageSender, Level.INFO, null);
     }
 
-    public SyslogHandler(@Nonnull SyslogMessageSender syslogMessageSender, @Nonnull Level level, @Nullable Filter filter) {
+    public SyslogHandler(@NonNull SyslogMessageSender syslogMessageSender, @NonNull Level level, @Nullable Filter filter) {
         super(level, filter);
         this.syslogMessageSender = syslogMessageSender;
     }
 
-    @Nonnull
+    @NonNull
     @Override
     protected Formatter getDefaultFormatter() {
         return new SyslogMessageFormatter();

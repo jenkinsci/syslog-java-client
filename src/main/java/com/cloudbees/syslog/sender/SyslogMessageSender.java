@@ -18,9 +18,9 @@ package com.cloudbees.syslog.sender;
 import com.cloudbees.syslog.SyslogMessage;
 import com.cloudbees.syslog.MessageFormat;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import javax.annotation.concurrent.ThreadSafe;
+import edu.umd.cs.findbugs.annotations.NonNull;
+import edu.umd.cs.findbugs.annotations.Nullable;
+import net.jcip.annotations.ThreadSafe;
 import java.io.CharArrayWriter;
 import java.io.Closeable;
 import java.io.IOException;
@@ -65,5 +65,5 @@ public interface SyslogMessageSender extends Closeable {
      * @param message the message to send
      * @throws IOException
      */
-    void sendMessage(@Nonnull SyslogMessage message) throws IOException;
+    void sendMessage(@NonNull SyslogMessage message) throws IOException;
 }

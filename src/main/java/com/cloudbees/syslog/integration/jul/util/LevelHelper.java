@@ -25,8 +25,8 @@ package com.cloudbees.syslog.integration.jul.util;
 
 import com.cloudbees.syslog.Severity;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
+import edu.umd.cs.findbugs.annotations.NonNull;
+import edu.umd.cs.findbugs.annotations.Nullable;
 import java.util.*;
 import java.util.logging.Level;
 

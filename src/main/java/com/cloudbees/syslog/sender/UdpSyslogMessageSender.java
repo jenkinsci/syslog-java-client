@@ -18,8 +18,8 @@ package com.cloudbees.syslog.sender;
 import com.cloudbees.syslog.SyslogMessage;
 import com.cloudbees.syslog.util.CachingReference;
 
-import javax.annotation.Nullable;
-import javax.annotation.concurrent.ThreadSafe;
+import edu.umd.cs.findbugs.annotations.Nullable;
+import net.jcip.annotations.ThreadSafe;
 import java.io.ByteArrayOutputStream;
 import java.io.Closeable;
 import java.io.IOException;

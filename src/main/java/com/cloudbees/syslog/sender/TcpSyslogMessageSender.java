@@ -19,9 +19,9 @@ import com.cloudbees.syslog.SyslogMessage;
 import com.cloudbees.syslog.util.CachingReference;
 import com.cloudbees.syslog.util.IoUtils;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import javax.annotation.concurrent.ThreadSafe;
+import edu.umd.cs.findbugs.annotations.NonNull;
+import edu.umd.cs.findbugs.annotations.Nullable;
+import net.jcip.annotations.ThreadSafe;
 import javax.net.SocketFactory;
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.SSLSession;
@@ -83,7 +83,7 @@ public class TcpSyslogMessageSender extends AbstractSyslogMessageSender implemen
     private String postfix = "\r\n";
 
     @Override
-    public synchronized void sendMessage(@Nonnull SyslogMessage message) throws IOException {
+    public synchronized void sendMessage(@NonNull SyslogMessage message) throws IOException {
         sendCounter.incrementAndGet();
         long nanosBefore = System.nanoTime();
 

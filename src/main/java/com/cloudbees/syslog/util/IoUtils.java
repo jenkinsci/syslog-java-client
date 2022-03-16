@@ -15,7 +15,7 @@
  */
 package com.cloudbees.syslog.util;
 
-import javax.annotation.Nullable;
+import edu.umd.cs.findbugs.annotations.Nullable;
 import java.io.IOException;
 import java.io.Writer;
 import java.net.Socket;

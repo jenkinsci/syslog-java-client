@@ -25,8 +25,8 @@ package com.cloudbees.syslog.integration.jul;
 
 import com.cloudbees.syslog.integration.jul.util.LogManagerHelper;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
+import edu.umd.cs.findbugs.annotations.NonNull;
+import edu.umd.cs.findbugs.annotations.Nullable;
 import java.util.logging.*;
 
 /**
@@ -48,7 +48,7 @@ public abstract class AbstractHandler extends Handler {
     }
 
 
-    public AbstractHandler(@Nonnull Level level, @Nullable Filter filter) {
+    public AbstractHandler(@NonNull Level level, @Nullable Filter filter) {
         this.logLevel = level;
         this.filter = filter;
         this.formatter = getDefaultFormatter();
@@ -60,7 +60,7 @@ public abstract class AbstractHandler extends Handler {
      *
      * @return
      */
-    @Nonnull
+    @NonNull
     protected Formatter getDefaultFormatter() {
         return new SimpleFormatter();
     }

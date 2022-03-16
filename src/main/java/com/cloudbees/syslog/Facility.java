@@ -15,8 +15,8 @@
  */
 package com.cloudbees.syslog;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
+import edu.umd.cs.findbugs.annotations.NonNull;
+import edu.umd.cs.findbugs.annotations.Nullable;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Map;
@@ -145,10 +145,10 @@ public enum Facility implements Comparable<Facility> {
     /**
      * Syslog facility textual code. Not {@code null}
      */
-    @Nonnull
+    @NonNull
     private final String label;
 
-    private Facility(int numericalCode, @Nonnull String label) {
+    private Facility(int numericalCode, @NonNull String label) {
         this.numericalCode = numericalCode;
         this.label = label;
     }
@@ -158,7 +158,7 @@ public enum Facility implements Comparable<Facility> {
      * @return Syslog facility, not {@code null}
      * @throws IllegalArgumentException the given numericalCode is not a valid Syslog facility numerical code
      */
-    @Nonnull
+    @NonNull
     public static Facility fromNumericalCode(int numericalCode) throws IllegalArgumentException {
         Facility facility = facilityFromNumericalCode.get(numericalCode);
         if (facility == null) {
