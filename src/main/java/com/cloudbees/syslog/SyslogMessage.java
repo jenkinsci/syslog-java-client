@@ -74,7 +74,7 @@ public class SyslogMessage {
                 TimeZone.getTimeZone("GMT"),
                 concurrency);
 
-        /**
+        /*
          * According to <a href="http://tools.ietf.org/html/rfc3164#section-4.1.2">RFC31614- 4.1.2 HEADER Part of a syslog Packet</a>,
          * we should use local time and not GMT.
          * <quote>
