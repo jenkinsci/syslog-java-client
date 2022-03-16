@@ -94,6 +94,9 @@
                 <groupId>com.github.spotbugs</groupId>
                 <artifactId>spotbugs-maven-plugin</artifactId>
                 <version>4.5.3.0</version>
+                <configuration>
+                    <threshold>High</threshold>
+                </configuration>
                 <executions>
                     <execution>
                         <id>spotbugs</id>
