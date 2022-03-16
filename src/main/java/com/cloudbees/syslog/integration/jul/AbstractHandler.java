@@ -75,6 +75,7 @@ public abstract class AbstractHandler extends Handler {
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean isLoggable(LogRecord record) {
         if (record == null) {
             return false;
@@ -94,6 +95,7 @@ public abstract class AbstractHandler extends Handler {
      * {@inheritDoc}
      */
     @Nullable
+    @Override
     public Filter getFilter() {
         return filter;
     }
