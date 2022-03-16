@@ -34,6 +34,7 @@ import java.io.OutputStreamWriter;
 import java.io.Writer;
 import java.math.BigInteger;
 import java.net.*;
+import java.nio.charset.StandardCharsets;
 import java.security.cert.Certificate;
 import java.security.cert.X509Certificate;
 import java.util.Objects;
@@ -189,7 +190,7 @@ public class TcpSyslogMessageSender extends AbstractSyslogMessageSender implemen
             }
         }
         if (writer == null) {
-            writer = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream(), UTF_8));
+            writer = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream(), StandardCharsets.UTF_8));
         }
     }
 
