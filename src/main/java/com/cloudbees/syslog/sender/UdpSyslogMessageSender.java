@@ -92,10 +92,7 @@ public class UdpSyslogMessageSender extends AbstractSyslogMessageSender implemen
 
             DatagramPacket packet = new DatagramPacket(bytes, bytes.length, syslogServerHostnameReference.get(), syslogServerPort);
             datagramSocket.send(packet);
-        } catch (IOException e) {
-            sendErrorCounter.incrementAndGet();
-            throw e;
-        } catch (RuntimeException e) {
+        } catch (IOException | RuntimeException e) {
             sendErrorCounter.incrementAndGet();
             throw e;
         } finally {

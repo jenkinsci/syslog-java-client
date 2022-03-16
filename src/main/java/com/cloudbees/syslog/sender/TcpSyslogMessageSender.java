@@ -100,11 +100,7 @@ public class TcpSyslogMessageSender extends AbstractSyslogMessageSender implemen
                     writer.write(postfix);
                     writer.flush();
                     return;
-                } catch (IOException e) {
-                    lastException = e;
-                    IoUtils.closeQuietly(socket, writer);
-                    trySendErrorCounter.incrementAndGet();
-                } catch (RuntimeException e) {
+                } catch (IOException | RuntimeException e) {
                     lastException = e;
                     IoUtils.closeQuietly(socket, writer);
                     trySendErrorCounter.incrementAndGet();

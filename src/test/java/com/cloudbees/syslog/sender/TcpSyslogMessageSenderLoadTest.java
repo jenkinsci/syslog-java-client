@@ -60,11 +60,7 @@ public class TcpSyslogMessageSenderLoadTest {
                         try {
                             messageSender.sendMessage(prefix + j);
                             Thread.sleep(random.nextInt(3));
-                        } catch (IOException e) {
-                            System.err.println("ERROR in " + prefix);
-                            e.printStackTrace();
-                            break;
-                        } catch (InterruptedException e) {
+                        } catch (IOException | InterruptedException e) {
                             System.err.println("ERROR in " + prefix);
                             e.printStackTrace();
                             break;
