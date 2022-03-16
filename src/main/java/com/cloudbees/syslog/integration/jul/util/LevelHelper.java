@@ -43,8 +43,8 @@ public class LevelHelper {
     private final static Map<Level, Severity> julLevelToSyslogSeverity;
 
     static {
-        Map<String, Level> levelsByNameMap = new HashMap<String, Level>();
-        Map<Integer, Level> levelsByValueMap = new HashMap<Integer, Level>();
+        Map<String, Level> levelsByNameMap = new HashMap<>();
+        Map<Integer, Level> levelsByValueMap = new HashMap<>();
         for (Level level : levels) {
             levelsByNameMap.put(level.getName(), level);
             levelsByValueMap.put(level.intValue(), level);

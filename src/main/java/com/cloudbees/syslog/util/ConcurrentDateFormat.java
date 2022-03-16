@@ -49,7 +49,7 @@ public class ConcurrentDateFormat {
      * @throws IllegalArgumentException if the given pattern is invalid
      */
     public ConcurrentDateFormat(String pattern, Locale locale, TimeZone timeZone, int maxCacheSize) {
-        this.dateFormats = new LinkedBlockingDeque<SimpleDateFormat>(maxCacheSize);
+        this.dateFormats = new LinkedBlockingDeque<>(maxCacheSize);
         this.pattern = pattern;
         this.locale = locale;
         this.timeZone = timeZone;

@@ -222,7 +222,7 @@ public class SyslogMessage {
     public Set<SDElement> getSDElements() {
         Set<SDElement> ssde = sdElements;
         if (ssde == null) {
-            ssde = new HashSet<SDElement>(0);
+            ssde = new HashSet<>(0);
         }
         return ssde;
     }
@@ -233,7 +233,7 @@ public class SyslogMessage {
     
     public SyslogMessage withSDElement(SDElement sde) {
         if (sdElements == null) {
-            sdElements = new HashSet<SDElement>();
+            sdElements = new HashSet<>();
         }
         sdElements.add(sde);
         return this;

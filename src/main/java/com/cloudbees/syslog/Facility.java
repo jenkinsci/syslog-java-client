@@ -128,8 +128,8 @@ public enum Facility implements Comparable<Facility> {
     LOCAL7(23, "LOCAL7");
 
     // mapping
-    private final static Map<String, Facility> facilityFromLabel = new HashMap<String, Facility>();
-    private final static Map<Integer, Facility> facilityFromNumericalCode = new HashMap<Integer, Facility>();
+    private final static Map<String, Facility> facilityFromLabel = new HashMap<>();
+    private final static Map<Integer, Facility> facilityFromNumericalCode = new HashMap<>();
 
     static {
         for (Facility facility : Facility.values()) {

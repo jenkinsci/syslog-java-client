@@ -46,7 +46,7 @@ public class InternalLogger {
         return new InternalLogger(name);
     }
 
-    public static InternalLogger getLogger(@NonNull Class clazz) {
+    public static InternalLogger getLogger(@NonNull Class<?> clazz) {
         return getLogger(clazz.getName());
     }
 

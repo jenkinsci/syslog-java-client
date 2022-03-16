@@ -58,7 +58,7 @@ public class SDElement implements Serializable {
         return sdID;
     }
 
-    private List<SDParam> sdParams = new ArrayList<SDParam>();
+    private List<SDParam> sdParams = new ArrayList<>();
 
     /**
      * Get the value of sdParams
