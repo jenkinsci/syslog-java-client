@@ -133,7 +133,7 @@ public class SyslogMessage {
     }
 
     public void setTimestamp(Date timestamp) {
-        this.timestamp = (timestamp == null ? null : timestamp.getTime());
+        this.timestamp = timestamp == null ? null : timestamp.getTime();
     }
 
     public SyslogMessage withTimestamp(long timestamp) {
@@ -142,7 +142,7 @@ public class SyslogMessage {
     }
 
     public SyslogMessage withTimestamp(Date timestamp) {
-        this.timestamp = (timestamp == null ? null : timestamp.getTime());
+        this.timestamp = timestamp == null ? null : timestamp.getTime();
         return this;
     }
 
@@ -381,7 +381,7 @@ public class SyslogMessage {
         out.write('>');
         out.write(rfc3164DateFormat.format(timestamp == null ? new Date() : new Date(timestamp))); // message time
         out.write(SP);
-        out.write((hostname == null) ? localhostNameReference.get() : hostname); // emitting server hostname
+        out.write(hostname == null ? localhostNameReference.get() : hostname); // emitting server hostname
         out.write(SP);
         writeNillableValue(appName, out); // appname
 
