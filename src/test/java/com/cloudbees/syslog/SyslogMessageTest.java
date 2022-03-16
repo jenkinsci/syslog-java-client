@@ -29,7 +29,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 public class SyslogMessageTest {
 
     @Test
-    public void testRfc5425Format() throws Exception {
+    public void testRfc5425Format() {
         // GIVEN
         Calendar cal = Calendar.getInstance();
         cal.setTimeZone(TimeZone.getTimeZone("GMT"));
@@ -58,7 +58,7 @@ public class SyslogMessageTest {
     }
 
     @Test
-    public void testRfc5424Format() throws Exception {
+    public void testRfc5424Format() {
 
         Calendar cal = Calendar.getInstance();
         cal.setTimeZone(TimeZone.getTimeZone("GMT"));
@@ -86,7 +86,7 @@ public class SyslogMessageTest {
     }
 
     @Test
-    public void testRfc5424FormatWithStructuredData() throws Exception {
+    public void testRfc5424FormatWithStructuredData() {
         Calendar cal = Calendar.getInstance();
         cal.setTimeZone(TimeZone.getTimeZone("GMT"));
         cal.set(2013, Calendar.DECEMBER, 5, 10, 30, 5);
@@ -119,7 +119,7 @@ public class SyslogMessageTest {
     }
 
     @Test
-    public void testRfc3164Format() throws Exception {
+    public void testRfc3164Format() {
 
         Calendar cal = Calendar.getInstance();
         cal.setTimeZone(TimeZone.getDefault());
