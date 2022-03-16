@@ -23,8 +23,8 @@
  */
 package com.cloudbees.syslog.integration.jul.util;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
+import edu.umd.cs.findbugs.annotations.NonNull;
+import edu.umd.cs.findbugs.annotations.Nullable;
 import java.util.logging.Filter;
 import java.util.logging.Formatter;
 import java.util.logging.Level;
@@ -41,7 +41,7 @@ public class LogManagerHelper {
      * If the property is not defined or cannot be parsed we return the given default value.
      */
     @Nullable
-    public static Level getLevelProperty(@Nonnull LogManager manager, @Nonnull String name, @Nullable Level defaultValue) {
+    public static Level getLevelProperty(@NonNull LogManager manager, @NonNull String name, @Nullable Level defaultValue) {
         if (name == null) {
             return defaultValue;
         }
@@ -62,7 +62,7 @@ public class LogManagerHelper {
      * If the property is not defined or has problems we return the defaultValue.
      */
     @Nullable
-    public static Filter getFilterProperty(@Nonnull LogManager manager, @Nullable String name, @Nullable Filter defaultValue) {
+    public static Filter getFilterProperty(@NonNull LogManager manager, @Nullable String name, @Nullable Filter defaultValue) {
         if (name == null) {
             return defaultValue;
         }
@@ -89,7 +89,7 @@ public class LogManagerHelper {
      *
      * If the property is not defined or has problems we return the defaultValue.
      */
-    public static Formatter getFormatterProperty(@Nonnull LogManager manager, @Nullable String name, @Nullable Formatter defaultValue) {
+    public static Formatter getFormatterProperty(@NonNull LogManager manager, @Nullable String name, @Nullable Formatter defaultValue) {
         if (name == null) {
             return defaultValue;
         }
@@ -114,7 +114,7 @@ public class LogManagerHelper {
      *
      * If the property is not defined we return the given default value.
      */
-    public static String getStringProperty(@Nonnull LogManager manager, @Nullable String name, String defaultValue) {
+    public static String getStringProperty(@NonNull LogManager manager, @Nullable String name, String defaultValue) {
         if (name == null) {
             return defaultValue;
         }
@@ -133,7 +133,7 @@ public class LogManagerHelper {
      *
      * If the property is not defined or cannot be parsed we return the given default value.
      */
-    public static int getIntProperty(@Nonnull LogManager manager, @Nullable String name, int defaultValue) {
+    public static int getIntProperty(@NonNull LogManager manager, @Nullable String name, int defaultValue) {
         if (name == null) {
             return defaultValue;
         }
@@ -156,7 +156,7 @@ public class LogManagerHelper {
      *
      * If the property is not defined or cannot be parsed we return the given default value.
      */
-    public static boolean getBooleanProperty(@Nonnull LogManager manager, @Nullable String name, boolean defaultValue) {
+    public static boolean getBooleanProperty(@NonNull LogManager manager, @Nullable String name, boolean defaultValue) {
         if (name == null) {
             return defaultValue;
         }

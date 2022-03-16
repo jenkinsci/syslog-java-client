@@ -15,8 +15,8 @@
  */
 package com.cloudbees.syslog;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
+import edu.umd.cs.findbugs.annotations.NonNull;
+import edu.umd.cs.findbugs.annotations.Nullable;
 
 import java.io.CharArrayWriter;
 import java.io.IOException;
@@ -265,7 +265,7 @@ public class SyslogMessage {
      * @param messageFormat message format
      * @param out                 output {@linkplain Writer}
      */
-    public void toSyslogMessage(@Nonnull MessageFormat messageFormat, @Nonnull Writer out) throws IOException {
+    public void toSyslogMessage(@NonNull MessageFormat messageFormat, @NonNull Writer out) throws IOException {
         switch (messageFormat) {
             case RFC_3164:
                 toRfc3164SyslogMessage(out);
@@ -391,7 +391,7 @@ public class SyslogMessage {
         }
     }
 
-    protected void writeNillableValue(@Nullable String value, @Nonnull Writer out) throws IOException {
+    protected void writeNillableValue(@Nullable String value, @NonNull Writer out) throws IOException {
         if (value == null) {
             out.write(NILVALUE);
         } else {
@@ -399,7 +399,7 @@ public class SyslogMessage {
         }
     }
     
-    protected void writeStructuredDataOrNillableValue(@Nullable Set<SDElement> ssde, @Nonnull Writer out) throws IOException {
+    protected void writeStructuredDataOrNillableValue(@Nullable Set<SDElement> ssde, @NonNull Writer out) throws IOException {
         if (ssde == null || ssde.isEmpty()) {
             out.write(NILVALUE);
         } else {
@@ -409,7 +409,7 @@ public class SyslogMessage {
         }
     }
     
-    protected void writeSDElement(@Nonnull SDElement sde, @Nonnull Writer out) throws IOException {
+    protected void writeSDElement(@NonNull SDElement sde, @NonNull Writer out) throws IOException {
         out.write("[");
         out.write(sde.getSdID());
         for (SDParam sdp : sde.getSdParams()) {
@@ -418,7 +418,7 @@ public class SyslogMessage {
         out.write("]");
     }
     
-    protected void writeSDParam(@Nonnull SDParam sdp, @Nonnull Writer out) throws IOException {
+    protected void writeSDParam(@NonNull SDParam sdp, @NonNull Writer out) throws IOException {
         out.write(SP);
         out.write(sdp.getParamName());
         out.write('=');

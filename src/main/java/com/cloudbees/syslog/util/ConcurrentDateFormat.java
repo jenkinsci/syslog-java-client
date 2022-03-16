@@ -17,7 +17,7 @@ package com.cloudbees.syslog.util;
 
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 
-import javax.annotation.Nonnull;
+import edu.umd.cs.findbugs.annotations.NonNull;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
@@ -61,9 +61,9 @@ public class ConcurrentDateFormat {
      * @param date the time value to be formatted into a time string.
      * @return the formatted time string.
      */
-    @Nonnull
+    @NonNull
     @SuppressFBWarnings("RV_RETURN_VALUE_IGNORED_BAD_PRACTICE")
-    public String format(@Nonnull Date date) {
+    public String format(@NonNull Date date) {
         SimpleDateFormat dateFormat = dateFormats.poll();
         if (dateFormat == null) {
             dateFormat = new SimpleDateFormat(pattern, locale);

@@ -19,7 +19,7 @@ import org.hamcrest.Matchers;
 import org.junit.Assert;
 import org.junit.Test;
 
-import javax.annotation.Nullable;
+import edu.umd.cs.findbugs.annotations.Nullable;
 import java.util.concurrent.TimeUnit;
 
 public class CachingReferenceTest {

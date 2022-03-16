@@ -15,8 +15,8 @@
  */
 package com.cloudbees.syslog;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
+import edu.umd.cs.findbugs.annotations.NonNull;
+import edu.umd.cs.findbugs.annotations.Nullable;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Map;
@@ -72,10 +72,10 @@ public enum Severity {
     }
 
     private final int numericalCode;
-    @Nonnull
+    @NonNull
     private final String label;
 
-    private Severity(int numericalCode, @Nonnull String label) {
+    private Severity(int numericalCode, @NonNull String label) {
         this.numericalCode = numericalCode;
         this.label = label;
     }
@@ -120,7 +120,7 @@ public enum Severity {
     /**
      * Syslog severity textual code. Not {@code null}.
      */
-    @Nonnull
+    @NonNull
     public String label() {
         return label;
     }
