@@ -41,10 +41,6 @@
         </developer>
     </developers>
 
-    <prerequisites>
-        <maven>3.5.0</maven>
-    </prerequisites>
-
     <scm>
         <connection>scm:git:git://github.com/jenkinsci/syslog-java-client.git</connection>
         <developerConnection>scm:git:git@github.com:jenkinsci/syslog-java-client.git</developerConnection>
