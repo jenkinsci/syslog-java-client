@@ -1,6 +1,9 @@
 package com.cloudbees.syslog.sender;
 
-import com.cloudbees.syslog.*;
+import com.cloudbees.syslog.Facility;
+import com.cloudbees.syslog.MessageFormat;
+import com.cloudbees.syslog.Severity;
+import com.cloudbees.syslog.SyslogMessage;
 import com.cloudbees.syslog.util.InternalLogger;
 
 import edu.umd.cs.findbugs.annotations.NonNull;
