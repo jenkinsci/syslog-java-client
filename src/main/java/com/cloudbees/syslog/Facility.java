@@ -202,11 +202,6 @@ public enum Facility implements Comparable<Facility> {
      * Compare on {@link Facility#numericalCode()}
      */
     public static Comparator<Facility> comparator() {
-        return new Comparator<Facility>() {
-            @Override
-            public int compare(Facility f1, Facility f2) {
-                return Integer.compare(f1.numericalCode, f2.numericalCode);
-            }
-        };
+        return Comparator.comparingInt(f -> f.numericalCode);
     }
 }

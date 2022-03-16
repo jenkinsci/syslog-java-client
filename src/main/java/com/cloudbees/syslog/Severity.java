@@ -129,12 +129,7 @@ public enum Severity {
      * Compare on {@link Severity#numericalCode()}
      */
     public static Comparator<Severity> comparator() {
-        return new Comparator<Severity>() {
-            @Override
-            public int compare(Severity s1, Severity s2) {
-                return Integer.compare(s1.numericalCode, s2.numericalCode);
-            }
-        };
+        return Comparator.comparingInt(s -> s.numericalCode);
     }
 }
 

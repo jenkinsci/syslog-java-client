@@ -92,11 +92,6 @@ public class LevelHelper {
      * Compare on {@link java.util.logging.Level#intValue()}
      */
     public static Comparator<Level> comparator() {
-        return new Comparator<Level>() {
-            @Override
-            public int compare(Level l1, Level l2) {
-                return Integer.compare(l1.intValue(), l2.intValue());
-            }
-        };
+        return Comparator.comparingInt(Level::intValue);
     }
 }
