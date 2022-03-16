@@ -16,11 +16,12 @@
 package com.cloudbees.syslog.util;
 
 import org.hamcrest.Matchers;
-import org.junit.Assert;
 import org.junit.Test;
 
 import edu.umd.cs.findbugs.annotations.Nullable;
 import java.util.concurrent.TimeUnit;
+
+import static org.hamcrest.MatcherAssert.assertThat;
 
 public class CachingReferenceTest {
     /**
@@ -38,7 +39,7 @@ public class CachingReferenceTest {
         };
 
         String actual = cachingReference.get();
-        Assert.assertThat(actual, Matchers.equalTo("value"));
+        assertThat(actual, Matchers.equalTo("value"));
     }
 
     /**
