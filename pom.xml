@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <!--
   ~ Copyright 2013, CloudBees Inc.
   ~
@@ -16,19 +17,14 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <parent>
-        <groupId>com.cloudbees</groupId>
-        <artifactId>cloudbees-oss-parent</artifactId>
-        <version>8</version>
-    </parent>
-
+    <groupId>com.cloudbees</groupId>
     <artifactId>syslog-java-client</artifactId>
-    <packaging>bundle</packaging>
     <version>1.1.8-SNAPSHOT</version>
+    <packaging>bundle</packaging>
 
     <name>syslog-java-client</name>
     <description>Syslog Java Client</description>
-    <url>https://github.com/CloudBees-community/syslog-java-client</url>
+    <url>https://github.com/jenkinsci/syslog-java-client/</url>
     <inceptionYear>2014</inceptionYear>
     <licenses>
         <license>
@@ -50,11 +46,16 @@
     </prerequisites>
 
     <scm>
-        <connection>scm:git:git://github.com/CloudBees-community/syslog-java-client.git</connection>
-        <developerConnection>scm:git:git@github.com:CloudBees-community/syslog-java-client.git</developerConnection>
-        <url>https://github.com/CloudBees-community/syslog-java-client</url>
-      <tag>HEAD</tag>
-  </scm>
+        <connection>scm:git:git://github.com/jenkinsci/syslog-java-client.git</connection>
+        <developerConnection>scm:git:git@github.com:jenkinsci/syslog-java-client.git</developerConnection>
+        <tag>HEAD</tag>
+        <url>https://github.com/jenkinsci/syslog-java-client/</url>
+    </scm>
+
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
+
     <dependencies>
         <dependency>
             <groupId>com.github.spotbugs</groupId>
@@ -75,6 +76,7 @@
             <scope>test</scope>
         </dependency>
     </dependencies>
+
     <build>
         <plugins>
             <plugin>
@@ -82,8 +84,8 @@
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>3.8.0</version>
                 <configuration>
-                    <source>1.7</source>
-                    <target>1.7</target>
+                    <source>1.8</source>
+                    <target>1.8</target>
                 </configuration>
             </plugin>
             <plugin>
@@ -98,11 +100,41 @@
                 <version>3.1.10</version>
                 <executions>
                     <execution>
-                        <id>analyze-compile</id>
-                        <phase>compile</phase>
+                        <id>spotbugs</id>
                         <goals>
                             <goal>check</goal>
                         </goals>
+                        <phase>verify</phase>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <artifactId>maven-enforcer-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>display-info</id>
+                        <goals>
+                            <goal>display-info</goal>
+                            <goal>enforce</goal>
+                        </goals>
+                        <phase>validate</phase>
+                        <configuration>
+                            <rules>
+                                <requireMavenVersion>
+                                    <version>[3.8.1,)</version>
+                                    <message>3.8.1 required to no longer download dependencies via HTTP (use HTTPS instead).</message>
+                                </requireMavenVersion>
+                                <requireJavaVersion>
+                                    <version>[1.8.0,]</version>
+                                </requireJavaVersion>
+                                <bannedDependencies>
+                                    <excludes>
+                                        <!-- CVE-2021-44228 -->
+                                        <exclude>org.apache.logging.log4j:*:(,2.15.0-rc1]</exclude>
+                                    </excludes>
+                                </bannedDependencies>
+                            </rules>
+                        </configuration>
                     </execution>
                 </executions>
             </plugin>
