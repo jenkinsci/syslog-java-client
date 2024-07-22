@@ -94,6 +94,9 @@ messageSender.setDefaultSeverity(Severity.INFORMATIONAL);
 messageSender.setSyslogServerHostname("127.0.0.1");
 messageSender.setSyslogServerPort(1234);
 messageSender.setMessageFormat(MessageFormat.RFC_3164); // optional, default is RFC 3164
+// onSend is the default value, other value is onClose which has higher throughput but
+// risks dataloss if the syslog server address dynamically changes 
+messageSender.setSocketFlush(TcpSyslogMessageSender.SocketFlush.onSend); 
 messageSender.setSsl(false);
 
 // send a Syslog message
@@ -119,6 +122,9 @@ messageSender.setDefaultSeverity(Severity.INFORMATIONAL);
 messageSender.setSyslogServerHostname("127.0.0.1");
 messageSender.setSyslogServerPort(1234);
 messageSender.setMessageFormat(MessageFormat.RFC_3164); // optional, default is RFC 3164
+// onSend is the default value, other value is onClose which has higher throughput but
+// risks dataloss if the syslog server address dynamically changes 
+messageSender.setSocketFlush(TcpSyslogMessageSender.SocketFlush.onSend); 
 messageSender.setSsl(true);
 
 // send a Syslog message
@@ -145,6 +151,9 @@ messageSender.setSyslogServerHostname("127.0.0.1");
 // syslog-tls usually uses port 6514 as per https://tools.ietf.org/html/rfc5425#page-11
 messageSender.setSyslogServerPort(6514);
 messageSender.setMessageFormat(MessageFormat.RFC_5425);
+// onSend is the default value, other value is onClose which has higher throughput but
+// risks dataloss if the syslog server address dynamically changes 
+messageSender.setSocketFlush(TcpSyslogMessageSender.SocketFlush.onSend); 
 messageSender.setSsl(true);
 
 // send a Syslog message
