@@ -24,6 +24,8 @@ import java.net.Socket;
  * @author <a href="mailto:cleclerc@cloudbees.com">Cyrille Le Clerc</a>
  */
 public class IoUtils {
+    private static final InternalLogger logger = InternalLogger.getLogger(IoUtils.class);
+
     private IoUtils() {
 
     }
@@ -34,6 +36,7 @@ public class IoUtils {
                 socket.close();
             }
         } catch (Exception e) {
+            logger.warn("Exception while closing the socket "+socket, e);
         }
     }
 
@@ -48,7 +51,7 @@ public class IoUtils {
             try {
                 writer.close();
             } catch (IOException e) {
-
+                logger.warn("Exception while closing writer for socket "+socket, e);
             }
         }
         closeQuietly(socket);
