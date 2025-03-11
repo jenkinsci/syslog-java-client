@@ -112,11 +112,11 @@ public class TcpSyslogMessageSender extends AbstractSyslogMessageSender implemen
             }
             if (lastException != null) {
                 sendErrorCounter.incrementAndGet();
-                if (lastException instanceof IOException) {
-                    throw (IOException) lastException;
-                } else if (lastException instanceof RuntimeException) {
-                    throw (RuntimeException) lastException;
-                }
+            }
+            if (lastException instanceof IOException) {
+                throw (IOException) lastException;
+            } else if (lastException instanceof RuntimeException) {
+                throw (RuntimeException) lastException;
             }
         } finally {
             sendDurationInNanosCounter.addAndGet(System.nanoTime() - nanosBefore);
