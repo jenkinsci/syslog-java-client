@@ -17,8 +17,7 @@ package com.cloudbees.syslog;
 
 import java.util.Calendar;
 import java.util.TimeZone;
-
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -26,10 +25,10 @@ import static org.hamcrest.MatcherAssert.assertThat;
 /**
  * @author <a href="mailto:cleclerc@cloudbees.com">Cyrille Le Clerc</a>
  */
-public class SyslogMessageTest {
+class SyslogMessageTest {
 
     @Test
-    public void testRfc5425Format() {
+    void testRfc5425Format() {
         // GIVEN
         Calendar cal = Calendar.getInstance();
         cal.setTimeZone(TimeZone.getTimeZone("GMT"));
@@ -38,7 +37,6 @@ public class SyslogMessageTest {
 
         System.out.println(SyslogMessage.rfc3339DateFormat.format(cal.getTime()));
         System.out.println(cal.getTimeInMillis());
-
 
         SyslogMessage message = new SyslogMessage()
             .withTimestamp(cal.getTimeInMillis())
@@ -58,8 +56,7 @@ public class SyslogMessageTest {
     }
 
     @Test
-    public void testRfc5424Format() {
-
+    void testRfc5424Format() {
         Calendar cal = Calendar.getInstance();
         cal.setTimeZone(TimeZone.getTimeZone("GMT"));
         cal.set(2013, Calendar.DECEMBER, 5, 10, 30, 5);
@@ -67,7 +64,6 @@ public class SyslogMessageTest {
 
         System.out.println(SyslogMessage.rfc3339DateFormat.format(cal.getTime()));
         System.out.println(cal.getTimeInMillis());
-
 
         SyslogMessage message = new SyslogMessage()
                 .withTimestamp(cal.getTimeInMillis())
@@ -82,11 +78,10 @@ public class SyslogMessageTest {
         String expected = "<14>1 2013-12-05T10:30:05.000Z myserver.example.com my_app - - - a syslog message";
 
         assertThat(actual, is(expected));
-
     }
 
     @Test
-    public void testRfc5424FormatWithStructuredData() {
+    void testRfc5424FormatWithStructuredData() {
         Calendar cal = Calendar.getInstance();
         cal.setTimeZone(TimeZone.getTimeZone("GMT"));
         cal.set(2013, Calendar.DECEMBER, 5, 10, 30, 5);
@@ -94,7 +89,6 @@ public class SyslogMessageTest {
 
         System.out.println(SyslogMessage.rfc3339DateFormat.format(cal.getTime()));
         System.out.println(cal.getTimeInMillis());
-
 
         SyslogMessage message = new SyslogMessage()
                 .withTimestamp(cal.getTimeInMillis())
@@ -110,17 +104,16 @@ public class SyslogMessageTest {
         String expected = "<14>1 2013-12-05T10:30:05.000Z myserver.example.com my_app - - [exampleSDID@32473 iut=\"3\" eventSource=\"Application\" eventID=\"1011\"] a syslog message";
 
         assertThat(actual, is(expected));
-        
+
         message.withSDElement(new SDElement("examplePriority@32473", new SDParam("class", "high")));
         actual = message.toRfc5424SyslogMessage();
         expected = "<14>1 2013-12-05T10:30:05.000Z myserver.example.com my_app - - [exampleSDID@32473 iut=\"3\" eventSource=\"Application\" eventID=\"1011\"][examplePriority@32473 class=\"high\"] a syslog message";
-        
+
         assertThat(actual, is(expected));
     }
 
     @Test
-    public void testRfc3164Format() {
-
+    void testRfc3164Format() {
         Calendar cal = Calendar.getInstance();
         cal.setTimeZone(TimeZone.getDefault());
         cal.set(2013, Calendar.DECEMBER, 5, 10, 30, 5);
@@ -128,7 +121,6 @@ public class SyslogMessageTest {
 
         System.out.println(SyslogMessage.rfc3339DateFormat.format(cal.getTime()));
         System.out.println(cal.getTimeInMillis());
-
 
         SyslogMessage message = new SyslogMessage()
                 .withTimestamp(cal.getTimeInMillis())
@@ -143,6 +135,5 @@ public class SyslogMessageTest {
         String expected = "<14>Dec 05 10:30:05 myserver.example.com my_app: a syslog message";
 
         assertThat(actual, is(expected));
-
     }
 }

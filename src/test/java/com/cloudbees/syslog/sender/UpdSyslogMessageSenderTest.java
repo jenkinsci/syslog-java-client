@@ -17,18 +17,18 @@ package com.cloudbees.syslog.sender;
 
 import com.cloudbees.syslog.Facility;
 import com.cloudbees.syslog.Severity;
-import org.junit.Test;
 
 import java.sql.Timestamp;
+import org.junit.jupiter.api.Test;
 
 /**
  * @author <a href="mailto:cleclerc@cloudbees.com">Cyrille Le Clerc</a>
  */
-public class UpdSyslogMessageSenderTest {
+class UpdSyslogMessageSenderTest {
 
-    // @Ignore
+    // @Disabled
     @Test
-    public void send() throws Exception {
+    void send() throws Exception {
         UdpSyslogMessageSender messageSender = new UdpSyslogMessageSender();
         messageSender.setDefaultMessageHostname("mysecretkey");
         messageSender.setDefaultAppName("myapp");
@@ -39,6 +39,4 @@ public class UpdSyslogMessageSenderTest {
         messageSender.setSyslogServerPort(18977);
         messageSender.sendMessage("unit test message éèà " + getClass() + " - " + new Timestamp(System.currentTimeMillis()));
     }
-
-
 }
