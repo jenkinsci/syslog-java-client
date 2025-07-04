@@ -45,6 +45,7 @@ public class TcpSyslogMessageSenderLoadTest {
         // messageSender.setSyslogServerHostname("127.0.0.1");
         messageSender.setSyslogServerPort(46022);
         messageSender.setSsl(true);
+        messageSender.setSocketFlush(TcpSyslogMessageSender.SocketFlush.onSend);
 
         final AtomicInteger count = new AtomicInteger();
 
