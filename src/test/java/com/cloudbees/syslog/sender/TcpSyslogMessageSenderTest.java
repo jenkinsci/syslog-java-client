@@ -19,19 +19,18 @@ import com.cloudbees.syslog.Facility;
 import com.cloudbees.syslog.MessageFormat;
 import com.cloudbees.syslog.Severity;
 import com.cloudbees.syslog.SyslogMessage;
-import org.junit.Ignore;
-import org.junit.Test;
-
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
 import java.sql.Timestamp;
 
 /**
  * @author <a href="mailto:cleclerc@cloudbees.com">Cyrille Le Clerc</a>
  */
-public class TcpSyslogMessageSenderTest {
+class TcpSyslogMessageSenderTest {
 
-    // @Ignore
+    // @Disabled
     @Test
-    public void send() throws Exception {
+    void send() throws Exception {
         TcpSyslogMessageSender messageSender = new TcpSyslogMessageSender();
         messageSender.setDefaultMessageHostname("mysecretkey");
         messageSender.setDefaultAppName("myapp");
@@ -44,10 +43,9 @@ public class TcpSyslogMessageSenderTest {
         messageSender.sendMessage("unit test message over tcp éèà " + getClass() + " - " + new Timestamp(System.currentTimeMillis()));
     }
 
-    @Ignore
+    @Disabled
     @Test
-    public void send2() throws Exception {
-
+    void send2() throws Exception {
         SyslogMessage msg = new SyslogMessage()
                 .withAppName("my-app")
                 .withFacility(Facility.USER)
@@ -67,11 +65,9 @@ public class TcpSyslogMessageSenderTest {
         messageSender.sendMessage(msg);
     }
 
-
-    @Ignore
+    @Disabled
     @Test
-    public void sendOverSSL() throws Exception {
-
+    void sendOverSSL() throws Exception {
         SyslogMessage msg = new SyslogMessage()
                 .withAppName("my-app")
                 .withFacility(Facility.USER)
@@ -91,12 +87,11 @@ public class TcpSyslogMessageSenderTest {
         messageSender.sendMessage(msg);
     }
 
-
     /**
      * https://github.com/CloudBees-community/syslog-java-client/issues/19
      */
     @Test
-    public void test_bug19_NullPointerException_In_ToString(){
+    void test_bug19_NullPointerException_In_ToString(){
         TcpSyslogMessageSender tcpSyslogMessageSender = new TcpSyslogMessageSender();
         tcpSyslogMessageSender.toString();
     }

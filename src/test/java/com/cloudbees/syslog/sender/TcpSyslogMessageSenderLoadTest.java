@@ -53,18 +53,15 @@ public class TcpSyslogMessageSenderLoadTest {
         for (int i = 0; i < THREADS_COUNT; i++) {
             final String prefix = "thread-" + i + "msg-";
 
-            Runnable command = new Runnable() {
-                @Override
-                public void run() {
-                    for (int j = 0; j < ITERATION_COUNT; j++) {
-                        try {
-                            messageSender.sendMessage(prefix + j);
-                            Thread.sleep(random.nextInt(3));
-                        } catch (IOException | InterruptedException e) {
-                            System.err.println("ERROR in " + prefix);
-                            e.printStackTrace();
-                            break;
-                        }
+            Runnable command = () -> {
+                for (int j = 0; j < ITERATION_COUNT; j++) {
+                    try {
+                        messageSender.sendMessage(prefix + j);
+                        Thread.sleep(random.nextInt(3));
+                    } catch (IOException | InterruptedException e) {
+                        System.err.println("ERROR in " + prefix);
+                        e.printStackTrace();
+                        break;
                     }
                 }
             };

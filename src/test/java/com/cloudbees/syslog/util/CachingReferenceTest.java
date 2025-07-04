@@ -16,21 +16,22 @@
 package com.cloudbees.syslog.util;
 
 import org.hamcrest.Matchers;
-import org.junit.Test;
-
+import org.junit.jupiter.api.Test;
 import edu.umd.cs.findbugs.annotations.Nullable;
 import java.util.concurrent.TimeUnit;
 
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.equalTo;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
-public class CachingReferenceTest {
+class CachingReferenceTest {
+
     /**
      * Test that the locks are properly released.
      */
     @Test
-    public void test_return_value() {
-
-        CachingReference<String> cachingReference = new CachingReference<String>(5, TimeUnit.SECONDS) {
+    void test_return_value() {
+        CachingReference<String> cachingReference = new CachingReference<>(5, TimeUnit.SECONDS) {
             @Nullable
             @Override
             protected String newObject() {
@@ -39,26 +40,23 @@ public class CachingReferenceTest {
         };
 
         String actual = cachingReference.get();
-        assertThat(actual, Matchers.equalTo("value"));
+        assertThat(actual, equalTo("value"));
     }
 
     /**
      * Test that the locks are properly released.
      */
-    @Test(expected = MyRuntimeException.class)
-    public void test_throw_exception_in_get_object() {
-
-        CachingReference<String> cachingReference = new CachingReference<String>(5, TimeUnit.SECONDS) {
+    @Test
+    void test_throw_exception_in_get_object() {
+        CachingReference<String> cachingReference = new CachingReference<>(5, TimeUnit.SECONDS) {
             @Nullable
             @Override
             protected String newObject() {
                 throw new MyRuntimeException();
             }
         };
-
-        cachingReference.get();
+        assertThrows(MyRuntimeException.class, cachingReference::get);
     }
-
 
     private static class MyRuntimeException extends RuntimeException {
         public MyRuntimeException() {
