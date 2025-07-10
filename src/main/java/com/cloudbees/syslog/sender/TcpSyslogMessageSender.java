@@ -288,6 +288,8 @@ public class TcpSyslogMessageSender extends AbstractSyslogMessageSender implemen
 
     @Override
     public void close() throws IOException {
-        this.socket.close();
+        if (socket != null) {
+            this.socket.close();
+        }
     }
 }
