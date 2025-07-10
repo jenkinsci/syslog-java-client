@@ -12,7 +12,7 @@ Client library written in Java to send messages to a Syslog server.
 
 ## Release Notes and downloads
 
-See https://github.com/CloudBees-community/syslog-java-client/releases/
+See https://github.com/jenkinsci/syslog-java-client/releases
 
 ## Using the Syslog Java Client with Maven 
 
@@ -20,7 +20,7 @@ Add the following dependency in your pom.xml:
 
 ```xml
 <dependency>
-    <groupId>com.cloudbees</groupId>
+    <groupId>io.jenkins.lib</groupId>
     <artifactId>syslog-java-client</artifactId>
     <version>1.1.7</version>
 </dependency>
