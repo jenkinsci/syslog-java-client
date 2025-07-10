@@ -26,7 +26,7 @@
 
     <groupId>io.jenkins.lib</groupId>
     <artifactId>syslog-java-client</artifactId>
-    <version>1.1.8-SNAPSHOT</version>
+    <version>1.1.8</version>
     <packaging>bundle</packaging>
 
     <name>syslog-java-client</name>
@@ -51,12 +51,12 @@
     <scm>
         <connection>scm:git:https://github.com/jenkinsci/syslog-java-client.git</connection>
         <developerConnection>scm:git:git@github.com:jenkinsci/syslog-java-client.git</developerConnection>
-        <tag>HEAD</tag>
+        <tag>syslog-java-client-1.1.8</tag>
         <url>https://github.com/jenkinsci/syslog-java-client/</url>
     </scm>
 
     <properties>
-        <project.build.outputTimestamp>2023-01-01T00:00:00Z</project.build.outputTimestamp>
+        <project.build.outputTimestamp>2025-07-10T15:54:52Z</project.build.outputTimestamp>
     </properties>
 
     <dependencies>
