@@ -33,11 +33,7 @@ import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
 import java.math.BigInteger;
-import java.net.ConnectException;
-import java.net.InetAddress;
-import java.net.InetSocketAddress;
-import java.net.Socket;
-import java.net.UnknownHostException;
+import java.net.*;
 import java.nio.charset.StandardCharsets;
 import java.security.cert.Certificate;
 import java.security.cert.X509Certificate;
@@ -142,6 +138,30 @@ public class TcpSyslogMessageSender extends AbstractSyslogMessageSender implemen
                     && !socket.isOutputShutdown();
         } catch (Exception e) {
             socketIsValid = false;
+        }
+        if (socketIsValid) { //we may have received a tcp FIN. in such case we should establish a new connection.
+            int configuredSoTimeout = socket.getSoTimeout();//keep the current value
+            try {
+                //(Note: no 'real' data is expected to be received from the syslog server)
+                //we intend to read from the socket in order to check if a FIN was sent.
+                //if it was, read will return -1.
+                //but if not (which is usual case) we will remain blocked by the read().
+                //in order to minimize the blocking time, we're temporarily setting the timeout to the minimal possible value (1 millisecond)
+                socket.setSoTimeout(1);
+                int read = socket.getInputStream().read();
+                if (read == -1) { //we've received a FIN from the server
+                    logger.fine("A TCP FIN was received from the syslog server. marking current socket as invalid");
+                    socketIsValid = false;
+                }
+            } catch (SocketTimeoutException socketTimeoutException) {
+                //do nothing. this is the expected.
+            } catch (IOException e) {
+                //if any other exception, we don't know what is the problem, but we better mark the socket as invalid.
+                logger.finer("couldn't read from socket. (for checking if a FIN was received). marking current socket as invalid. "  + e.getMessage());
+                socketIsValid = false;
+            } finally {
+                socket.setSoTimeout(configuredSoTimeout);//restore
+            }
         }
         if (!socketIsValid) {
             writer = null;
